@@ -1,25 +1,34 @@
-module dmem (input logic clk, we,
-             input logic [3:0] byteEnable,
-             input logic [31:0] a, wd,
-             output logic [31:0] rd
+`timescale 1ns/1ps
+// Data memory 64 words x 32 bits
+
+module dmem (
+    
+        input logic clk,
+        input logic we,
+        input logic [3:0] byteEnable,
+        input logic [31:0] a,
+        input logic [31:0] wd,
+        output logic [31:0] rd
+
     );
 
-    (* rom_style="distributed" *) logic [31:0] RAM[63:0];
+    logic [31:0] RAM[63:0];
     
-    initial begin
-        $readmemh("C:/Users/Yesmurat Sagyndyk/Downloads/rv32i-main/rv32i-main/imem.txt", RAM);
-    end
-
-    assign rd = RAM[a[31:2]]; // word-aligned
+    initial $readmemh("...", RAM);
 
     always_ff @(posedge clk) begin
 
         if (we) begin
-            for (int i = 0; i < 4; i++) begin
-                if (byteEnable[i])
-                    RAM[a[31:2]][i*8 +: 8] <= wd[i*8 +: 8];
-            end
+
+            if (byteEnable[0]) RAM[ a[31:2] ] [7:0] <= wd[7:0];
+            if (byteEnable[1]) RAM[ a[31:2] ] [15:8] <= wd[15:8];
+            if (byteEnable[2]) RAM[ a[31:2] ] [23:16] <= wd[23:16];
+            if (byteEnable[3]) RAM[ a[31:2] ] [31:24] <= wd[31:24];
+
+            rd <= RAM[ a[31:2] ];
+
         end
+
     end
 
 endmodule // Data memory

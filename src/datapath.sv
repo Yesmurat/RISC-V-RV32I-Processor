@@ -1,3 +1,5 @@
+`timescale 1ns/1ps
+
 module datapath (
     
                 input logic clk, clr,
@@ -358,7 +360,7 @@ module datapath (
 
         .clk        (clk),
         .clr        (clr),
-        
+
         // MEM stage control signals
         .RegWriteM  (RegWriteM),
         .ResultSrcM (ResultSrcM),
