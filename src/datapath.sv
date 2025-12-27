@@ -47,21 +47,21 @@ module datapath (
 
     mux2 pcmux(
 
-        .d0(PCPlus4F),
-        .d1(PCTargetE),
-        .s(PCSrcE),
-        .y(PCF_new)
+        .d0 (PCPlus4F),
+        .d1 (PCTargetE),
+        .s  (PCSrcE),
+        .y  (PCF_new)
 
     );
 
     // Instruction Fetch (IF) stage
     IFregister ifreg(
         
-        .clk(clk),
-        .en(~StallF),
-        .clr(clr),
-        .d(PCF_new),
-        .q(PCF)
+        .clk    (clk),
+        .en     (~StallF),
+        .clr    (clr),
+        .d      (PCF_new),
+        .q      (PCF)
 
     );
 
@@ -78,27 +78,42 @@ module datapath (
     assign Rs2D = InstrD[24:20];
     assign RdD = InstrD[11:7];
 
+    assign opcode = InstrD[6:0];
+    assign funct3 = InstrD[14:12];
+
     IFIDregister ifidreg(
 
-        .clk(clk),
-        .clr(FlushD | clr),
-        .en(~StallD),
-        .RD_instr(RD_instr),
-        .PCF(PCF),
-        .PCPlus4F(PCPlus4F),
-        .InstrD(InstrD), .PCD(PCD), .PCPlus4D(PCPlus4D)
+        .clk        (clk),
+        .clr        (FlushD | clr),
+        .en         (~StallD),
+        .RD_instr   (RD_instr),
+        .PCF        (PCF),
+        .PCPlus4F   (PCPlus4F),
+        .InstrD     (InstrD), .PCD(PCD),
+        .PCPlus4D   (PCPlus4D)
+
     );
 
     regfile rf(
-        .clk(clk), .we3(RegWriteW), .clr(clr),
-        .a1(Rs1D), .a2(Rs2D), .a3(RdW),
-        .wd3(ResultW), .rd1(RD1), .rd2(RD2)
+
+        .clk    (clk),
+        .we3    (RegWriteW),
+        .clr    (clr),
+        .a1     (Rs1D),
+        .a2     (Rs2D),
+        .a3     (RdW),
+        .wd3    (ResultW),
+        .rd1    (RD1),
+        .rd2    (RD2)
+
     );
 
     extend ext(
-        .instr(InstrD),
-        .immsrc(ImmSrcD),
-        .immext(ImmExtD)
+
+        .instr  (InstrD),
+        .immsrc (ImmSrcD),
+        .immext (ImmExtD)
+
     );
 
     // Execute (EX) stage
@@ -119,42 +134,53 @@ module datapath (
     logic jumpRegE;
 
     IDEXregister idexreg(
-        .clk(clk),
-        .clr(FlushE | clr),
+
+        .clk            (clk),
+        .clr            (FlushE | clr),
+
         // ID stage control signals
-        .RegWriteD(RegWriteD),
-        .ResultSrcD(ResultSrcD),
-        .MemWriteD(MemWriteD),
-        .JumpD(JumpD),
-        .BranchD(BranchD),
-        .ALUControlD(ALUControlD),
-        .ALUSrcD(ALUSrcD),
-        .SrcAsrcD(SrcAsrcD),
-        .funct3D(funct3D),
-        .jumpRegD(jumpRegD),
+        .RegWriteD      (RegWriteD),
+        .ResultSrcD     (ResultSrcD),
+        .MemWriteD      (MemWriteD),
+        .JumpD          (JumpD),
+        .BranchD        (BranchD),
+        .ALUControlD    (ALUControlD),
+        .ALUSrcD        (ALUSrcD),
+        .SrcAsrcD       (SrcAsrcD),
+        .funct3D        (funct3D),
+        .jumpRegD       (jumpRegD),
 
         // EX stage control signals
-        .RegWriteE(RegWriteE),
-        .ResultSrcE(ResultSrcE),
-        .MemWriteE(MemWriteE),
-        .JumpE(JumpE),
-        .BranchE(BranchE),
-        .ALUControlE(ALUControlE),
-        .ALUSrcE(ALUSrcE),
-        .SrcAsrcE(SrcAsrcE),
-        .funct3E(funct3E),
-        .jumpRegE(jumpRegE),
+        .RegWriteE      (RegWriteE),
+        .ResultSrcE     (ResultSrcE),
+        .MemWriteE      (MemWriteE),
+        .JumpE          (JumpE),
+        .BranchE        (BranchE),
+        .ALUControlE    (ALUControlE),
+        .ALUSrcE        (ALUSrcE),
+        .SrcAsrcE       (SrcAsrcE),
+        .funct3E        (funct3E),
+        .jumpRegE       (jumpRegE),
 
         // datapath inputs & outputs
-        .RD1(RD1), .RD2(RD2), .PCD(PCD),
-        .Rs1D(Rs1D), .Rs2D(Rs2D), .RdD(RdD),
-        .ImmExtD(ImmExtD),
-        .PCPlus4D(PCPlus4D),
+        .RD1            (RD1),
+        .RD2            (RD2),
+        .PCD            (PCD),
+        .Rs1D           (Rs1D),
+        .Rs2D           (Rs2D),
+        .RdD            (RdD),
+        .ImmExtD        (ImmExtD),
+        .PCPlus4D       (PCPlus4D),
 
-        .RD1E(RD1E), .RD2E(RD2E), .PCE(PCE),
-        .Rs1E(Rs1E), .Rs2E(Rs2E), .RdE(RdE),
-        .ImmExtE(ImmExtE),
-        .PCPlus4E(PCPlus4E)
+        .RD1E           (RD1E),
+        .RD2E           (RD2E),
+        .PCE            (PCE),
+        .Rs1E           (Rs1E),
+        .Rs2E           (Rs2E),
+        .RdE            (RdE),
+        .ImmExtE        (ImmExtE),
+        .PCPlus4E       (PCPlus4E)
+
     );
 
     assign PCSrcE = (BranchE & branchTakenE) | JumpE;
@@ -183,9 +209,12 @@ module datapath (
     assign WriteDataE = SrcBE;;
 
     branch_unit bu(
-        .SrcAE(SrcAE), .SrcBE(SrcBE),
-        .funct3E(funct3E),
-        .branchTakenE(branchTakenE)
+
+        .SrcAE          (SrcAE),
+        .SrcBE          (SrcBE),
+        .funct3E        (funct3E),
+        .branchTakenE   (branchTakenE)
+
     );
 
     logic [31:0] adder_base;
@@ -194,9 +223,12 @@ module datapath (
     assign PCTargetE = adder_base + ImmExtE;
 
     alu alu(
-        .d0(SrcAE), .d1(SrcBE), //  inputs
-        .s(ALUControlE), // operation control signal
-        .y(ALUResultE) // output
+
+        .d0 (SrcAE),
+        .d1 (SrcBE),
+        .s  (ALUControlE),
+        .y  (ALUResultE)
+
     );
 
     // --------------------------------------------------------------//
@@ -213,33 +245,38 @@ module datapath (
     logic [31:0] ImmExtM;
 
     EXMEMregister exmemreg(
-        .clk(clk), .clr(clr),
+
+        .clk        (clk),
+        .clr        (clr),
+
         // EX stage control signals
-        .RegWriteE(RegWriteE),
-        .ResultSrcE(ResultSrcE),
-        .MemWriteE(MemWriteE),
-        .funct3E(funct3E),
+        .RegWriteE  (RegWriteE),
+        .ResultSrcE (ResultSrcE),
+        .MemWriteE  (MemWriteE),
+        .funct3E    (funct3E),
 
         // MEM stage control signals
-        .RegWriteM(RegWriteM),
-        .ResultSrcM(ResultSrcM),
-        .MemWriteM(MemWriteM),
-        .funct3M(funct3M),
+        .RegWriteM  (RegWriteM),
+        .ResultSrcM (ResultSrcM),
+        .MemWriteM  (MemWriteM),
+        .funct3M    (funct3M),
 
         // datapath inputs & outputs
-        .ALUResultE(ALUResultE),
-        .WriteDataE(WriteDataE),
-        .RdE(RdE),
-        .ImmExtE(ImmExtE),
-        .PCPlus4E(PCPlus4E),
+        .ALUResultE (ALUResultE),
+        .WriteDataE (WriteDataE),
+        .RdE        (RdE),
+        .ImmExtE    (ImmExtE),
+        .PCPlus4E   (PCPlus4E),
 
-        .ALUResultM(ALUResultM), // output to Data Memory
-        .WriteDataM(WriteDataM),
-        .RdM(RdM),
-        .ImmExtM(ImmExtM),
-        .PCPlus4M(PCPlus4M)
+        .ALUResultM (ALUResultM),
+        .WriteDataM (WriteDataM),
+        .RdM        (RdM),
+        .ImmExtM    (ImmExtM),
+        .PCPlus4M   (PCPlus4M)
+
     );
 
+    // partial write enable block
     always_comb begin
         byteEnable = 4'b0000;
         case (funct3M) // funct3 determines store type
@@ -259,10 +296,12 @@ module datapath (
     end
 
     loadext loadext(
-        .LoadTypeM(funct3M),
-        .RD_data(RD_data),
-        .byteAddrM(byteAddrM),
-        .load_data(load_data)
+
+        .LoadTypeM  (funct3M),
+        .RD_data    (RD_data),
+        .byteAddrM  (byteAddrM),
+        .load_data  (load_data)
+
     );
 
     // -------------------------------------------------------------//
@@ -274,34 +313,40 @@ module datapath (
     logic [1:0] ResultSrcW;
 
     MEMWBregister wbreg(
-        .clk(clk), .clr(clr),
+
+        .clk        (clk),
+        .clr        (clr),
         // MEM stage control signals
-        .RegWriteM(RegWriteM),
-        .ResultSrcM(ResultSrcM),
+        .RegWriteM  (RegWriteM),
+        .ResultSrcM (ResultSrcM),
 
         // WB stage control signals
-        .RegWriteW(RegWriteW),
-        .ResultSrcW(ResultSrcW),
+        .RegWriteW  (RegWriteW),
+        .ResultSrcW (ResultSrcW),
 
         // datapath inputs & outputs
-        .ALUResultM(ALUResultM),
-        .load_data(load_data),
-        .RdM(RdM),
-        .ImmExtM(ImmExtM),
-        .PCPlus4M(PCPlus4M),
+        .ALUResultM (ALUResultM),
+        .load_data  (load_data),
+        .RdM        (RdM),
+        .ImmExtM    (ImmExtM),
+        .PCPlus4M   (PCPlus4M),
 
-        .ALUResultW(ALUResultW),
-        .ReadDataW(ReadDataW),
-        .RdW(RdW),
-        .ImmExtW(ImmExtW),
-        .PCPlus4W(PCPlus4W)
+        .ALUResultW (ALUResultW),
+        .ReadDataW  (ReadDataW),
+        .RdW        (RdW),
+        .ImmExtW    (ImmExtW),
+        .PCPlus4W   (PCPlus4W)
+
     );
 
     mux4 ResultWmux(
-        .d0(ALUResultW), .d1(ReadDataW),
-        .d2(PCPlus4W), .d3(ImmExtW),
-        .s(ResultSrcW),
-        .y(ResultW)
+
+        .d0 (ALUResultW),
+        .d1 (ReadDataW),
+        .d2 (PCPlus4W),
+        .d3 (ImmExtW),
+        .s  (ResultSrcW),
+        .y  (ResultW)
     );
 
 endmodule
