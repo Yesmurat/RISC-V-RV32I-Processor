@@ -256,14 +256,12 @@ module datapath (
     // Memory write (MEM) stage
     logic [31:0] PCPlus4M;
     logic [2:0] funct3M;
-    
     logic [1:0] ResultSrcM;
-
     logic [1:0] byteAddrM;
-    assign byteAddrM = ALUResultM[1:0];
-
     logic [31:0] load_data;
     logic [31:0] ImmExtM;
+
+    assign byteAddrM = ALUResultM[1:0];
 
     EXMEMregister exmemreg(
 
@@ -297,23 +295,46 @@ module datapath (
 
     );
 
-    // partial write enable block
+    // byte loads
     always_comb begin
-        byteEnable = 4'b0000;
-        case (funct3M) // funct3 determines store type
-            3'b000: case (byteAddrM)
-                2'b00: byteEnable = 4'b0001; // enable byte 0
-                2'b01: byteEnable = 4'b0010; // enable byte 1
-                2'b10: byteEnable = 4'b0100; // enable byte 2
-                2'b11: byteEnable = 4'b1000; // enable byte 3
-                default: byteEnable = 4'b0000;
-            endcase
-            3'b001: byteEnable = (byteAddrM[1] == 0) // sh
-                                    ? 4'b0011 // low half
-                                    : 4'b1100; // high half
-            3'b010: byteEnable = 4'b1111;
-            default: byteEnable = 4'b0000;
+
+        unique case (funct3M) // funct3 determines store type
+
+            3'b000: begin
+                
+                unique case (byteAddrM)
+
+                    2'b00: byteEnable = 4'b0001; // enable byte 0 
+                    2'b01: byteEnable = 4'b0010; // enable byte 1
+                    2'b10: byteEnable = 4'b0100; // enable byte 2
+                    2'b11: byteEnable = 4'b1000; // enable byte 3
+                
+                endcase
+                
+            end
+
+            3'b001: begin
+
+                byteEnable = (byteAddrM[1] == 0) // sh
+                                ? 4'b0011 // low half
+                                : 4'b1100; // high half
+                
+            end
+
+            3'b010: begin
+
+                byteEnable = 4'b1111;
+                
+            end
+
+            default: begin
+
+                byteEnable = 4'b0000;
+                
+            end
+
         endcase
+
     end
 
     loadext loadext(
@@ -337,6 +358,7 @@ module datapath (
 
         .clk        (clk),
         .clr        (clr),
+        
         // MEM stage control signals
         .RegWriteM  (RegWriteM),
         .ResultSrcM (ResultSrcM),
