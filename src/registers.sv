@@ -2,15 +2,15 @@ module IFregister (
     
         input logic         clk,
         input logic         en,
-        input logic         clr,
+        input logic         reset,
         input logic  [31:0] d,
         output logic [31:0] q
         
     );
     
-    always_ff @(posedge clk or posedge clr) begin
+    always_ff @(posedge clk or posedge reset) begin
 
-        if (clr) q <= 32'b0;
+        if (reset) q <= 32'b0;
 
         else if (en) q <= d;
 
@@ -23,7 +23,7 @@ endmodule // IF stage register
 module IFIDregister (
     
         input logic         clk,
-        input logic         clr,
+        input logic         reset,
         input logic         en,
         input logic  [31:0] RD_instr,
         input logic  [31:0] PCF,
@@ -34,9 +34,9 @@ module IFIDregister (
         
     );
     
-    always_ff @(posedge clk or posedge clr) begin
+    always_ff @(posedge clk or posedge reset) begin
 
-        if (clr) begin
+        if (reset) begin
 
             InstrD <= 32'b0;
             PCD <= 32'b0;
@@ -59,7 +59,7 @@ endmodule // ID stage register
 module IDEXregister (
     
         input logic         clk,
-        input logic         clr,
+        input logic         reset,
 
         // ID stage controls signals
         input logic         RegWriteD,
@@ -106,9 +106,9 @@ module IDEXregister (
 
 );
 
-    always_ff @(posedge clk or posedge clr) begin
+    always_ff @(posedge clk or posedge reset) begin
 
-        if (clr) begin
+        if (reset) begin
 
             RegWriteE <= 1'b0;
             ResultSrcE <= 2'b0;
@@ -156,7 +156,7 @@ endmodule
 module EXMEMregister (
     
         input logic clk,
-        input logic clr,
+        input logic reset,
 
         // EX stage control signals
         input logic         RegWriteE,
@@ -185,9 +185,9 @@ module EXMEMregister (
 
 );
 
-    always_ff @(posedge clk or posedge clr) begin
+    always_ff @(posedge clk or posedge reset) begin
 
-        if (clr) begin
+        if (reset) begin
             
             RegWriteM <= 1'b0;
             ResultSrcM <= 2'b0;
@@ -224,7 +224,7 @@ endmodule
 module MEMWBregister (
     
         input logic         clk,
-        input logic         clr,
+        input logic         reset,
 
         // MEM stage control signals
         input logic         RegWriteM,
@@ -249,9 +249,9 @@ module MEMWBregister (
 
 );
 
-    always_ff @(posedge clk or posedge clr) begin
+    always_ff @(posedge clk or posedge reset) begin
 
-        if (clr) begin
+        if (reset) begin
             
             RegWriteW <= 1'b0;
             ResultSrcW <= 2'b0;

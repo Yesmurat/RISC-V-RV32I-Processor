@@ -5,7 +5,6 @@ module top (
     
         input logic        clk,
         input logic        clr,
-        output logic [3:0] LED
 
     );
 
@@ -48,7 +47,5 @@ module top (
         .rd         (RD_data)
         
     );
-
-    assign LED = ALUResultM[3:0];
     
 endmodule

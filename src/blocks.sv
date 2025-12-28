@@ -1,5 +1,3 @@
-`timescale 1ns/1ps
-
 module mux2 (
     
         input logic  [31:0] d0, d1,
@@ -47,97 +45,6 @@ module mux4 (
     end
 
 endmodule // 4-to-1 mux
-
-module regfile (
-    
-        input logic          clk, we3, clr,
-        input logic  [4:0]   a1, a2, a3,
-        input logic  [31:0]  wd3,
-
-        output logic [31:0]  rd1, rd2
-        
-    );
-
-    logic [31:0] rf[31:0];
-
-    always_ff @(posedge clk or posedge clr) begin
-
-        if (clr) begin
-
-            integer i;
-            for (i = 0; i < 32; i=i+1)
-                rf[i] <= 32'b0;
-        end
-        
-        else if (we3) begin
-
-            rf[a3] <= wd3;
-            
-        end
-
-    end
-
-    // The register file is write-first and read occurs after write
-
-    always_comb begin
-
-        // port 1
-        if ( we3 && (a3 == a1) ) rd1 = wd3; // just-written data
-
-        else if ( a1 == 0 ) rd1 = 32'b0; // x0 is hardwired to zero
-
-        else rd1 = rf[a1]; // stored data
-
-        // port 2
-        if ( we3 && (a3 == a2) ) rd2 = wd3;
-
-        else if ( a2 == 0 ) rd2 = 32'b0;
-
-        else rd2 = rf[a2];
-
-    end
-
-endmodule // Register file
-
-module alu (
-    
-        input logic  [31:0] d0, d1,
-        input logic  [3:0]  s,
-        output logic [31:0] y
-        
-    );
-
-    always_comb begin
-
-        case (s)
-
-            4'b0000: y = d0 + d1; // add/addi
-
-            4'b0001: y = d0 - d1; // sub
-
-            4'b0111: y = d0 << d1[4:0]; // sll/slli
-
-            4'b0101: y = ($signed(d0) < $signed(d1)) ? 32'b1 : 32'b0; // slt/slti (signed)
-            
-            4'b0110: y = (d0 < d1) ? 32'b1 : 32'b0; // sltu/sltiu (unsigned)
-
-            4'b0100: y = d0 ^ d1; // xor/xori 
-
-            4'b1001: y = $signed(d0) >>> d1[4:0]; // sra/srai
-
-            4'b1000: y = d0 >> d1[4:0]; // srl/srli
-            
-            4'b0011: y = d0 | d1; // or/ori
-
-            4'b0010: y = d0 & d1; // and/andi
-
-            default: y = 32'b0;
-
-        endcase
-
-    end
-
-endmodule // ALU
 
 module branch_unit (
     

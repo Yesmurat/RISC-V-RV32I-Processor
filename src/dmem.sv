@@ -1,5 +1,5 @@
 `timescale 1ns/1ps
-// Data memory 64 words x 32 bits
+// Data memory 256 words
 
 module dmem (
     
@@ -12,7 +12,7 @@ module dmem (
 
     );
 
-    logic [31:0] RAM[63:0];
+    logic [31:0] RAM[255:0];
     
     initial $readmemh("...", RAM);
 

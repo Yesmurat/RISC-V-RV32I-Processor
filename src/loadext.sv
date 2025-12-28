@@ -25,9 +25,9 @@ module loadext (
 
             endcase
 
-            3'b100: begin
+            3'b100: begin // lbu
 
-                case (byteAddrM) // lbu
+                case (byteAddrM)
 
                     2'b00: load_data = {24'b0, RD_data[7:0]};
 

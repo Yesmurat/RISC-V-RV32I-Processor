@@ -1,5 +1,5 @@
 `timescale 1ns/1ps
-// Instruction Memory 64 words x 32 bits
+// Instruction Memory 256 words
 
 module imem (
     
@@ -8,7 +8,7 @@ module imem (
 
     );
 
-    logic [31:0] ROM[63:0];
+    logic [31:0] ROM[255:0];
     
     initial $readmemh("...", ROM);
 

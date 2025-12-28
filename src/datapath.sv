@@ -3,7 +3,8 @@
 module datapath (
     
                 input logic         clk,
-                input logic         clr,
+                input logic         reset,
+                
                 // Control signals
                 input logic         RegWriteD,
                 input logic  [1:0]  ResultSrcD,
@@ -74,7 +75,7 @@ module datapath (
         
         .clk    (clk),
         .en     (~StallF),
-        .clr    (clr),
+        .reset    (reset),
         .d      (PCF_new),
         .q      (PCF)
 
@@ -99,7 +100,7 @@ module datapath (
     IFIDregister ifidreg(
 
         .clk        (clk),
-        .clr        (FlushD | clr),
+        .reset        (FlushD | reset),
         .en         (~StallD),
         .RD_instr   (RD_instr),
         .PCF        (PCF),
@@ -113,7 +114,7 @@ module datapath (
 
         .clk    (clk),
         .we3    (RegWriteW),
-        .clr    (clr),
+        .reset    (reset),
         .a1     (Rs1D),
         .a2     (Rs2D),
         .a3     (RdW),
@@ -151,7 +152,7 @@ module datapath (
     IDEXregister idexreg(
 
         .clk            (clk),
-        .clr            (FlushE | clr),
+        .reset            (FlushE | reset),
 
         // ID stage control signals
         .RegWriteD      (RegWriteD),
@@ -281,7 +282,7 @@ module datapath (
     EXMEMregister exmemreg(
 
         .clk        (clk),
-        .clr        (clr),
+        .reset        (reset),
 
         // EX stage control signals
         .RegWriteE  (RegWriteE),
@@ -372,7 +373,7 @@ module datapath (
     MEMWBregister wbreg(
 
         .clk        (clk),
-        .clr        (clr),
+        .reset        (reset),
 
         // MEM stage control signals
         .RegWriteM  (RegWriteM),
