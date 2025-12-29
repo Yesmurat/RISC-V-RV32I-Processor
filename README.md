@@ -1,4 +1,4 @@
-# RV32I 5-Stage Pipelined Processor
+# DragonCore
 
 ## Overview
 This project implements a **5-stage pipelined RV32I RISC-V processor** in SystemVerilog.  
