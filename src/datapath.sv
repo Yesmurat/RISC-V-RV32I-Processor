@@ -39,7 +39,7 @@ module datapath (
                 // outputs to controller
                 output logic [6:0] opcode,
                 output logic [2:0] funct3,
-                output logic [6:0] funct7,
+                output logic       funct7b5,
 
                 // outputs to Hazard Unit
                 output logic [4:0]  Rs1D,
@@ -97,7 +97,7 @@ module datapath (
 
     assign opcode = InstrD[6:0];
     assign funct3 = InstrD[14:12];
-    assign funct7 = InstrD[31:25];
+    assign funct7b5 = InstrD[30];
 
     IFIDregister ifidreg(
 
@@ -151,6 +151,7 @@ module datapath (
     logic [2:0] funct3E;
     logic branchTakenE;
     logic jumpRegE;
+    logic SrcAsrcE, ALUSrcE;
 
     IDEXregister idexreg(
 
@@ -343,12 +344,6 @@ module datapath (
             3'b010: begin
 
                 byteEnable = 4'b1111;
-                
-            end
-
-            default: begin
-
-                byteEnable = 4'b0000;
                 
             end
 

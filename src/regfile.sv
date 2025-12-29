@@ -29,26 +29,37 @@ module regfile (
 
         end
         
-        else if (we3) begin
+        else if ( we3 && (a3 != 5'b0) ) begin
 
-            // read occurs after write
-
-            // port 1
-            if ( a3 == a1 ) rd1 <= wd3;
-
-            else if ( a1 == 0 ) rd1 <= 32'b0;
-
-            else rd1 <= rf[a1];
-
-            // port 2
-            if ( a3 == a2 ) rd2 <= wd3;
-
-            else if ( a2 == 0 ) rd2 <= 32'b0;
-
-            else rd2 <= rf[a2];
+            rf[a3] <= wd3;
             
         end
 
     end
+
+    always_comb begin
+
+        // port 1
+        if (we3 && (a3 == a1))
+            rd1 = wd3;
+
+        else if (a1 == 0)
+            rd1 = 32'b0;
+
+        else
+            rd1 = rf[a1];
+
+        // port 2
+        if (we3 && (a3 == a2))
+            rd2 = wd3;
+            
+        else if (a2 == 0)
+            rd2 = 32'b0;
+
+        else
+            rd2 = rf[a2];
+
+    end
+
 
 endmodule // Register file

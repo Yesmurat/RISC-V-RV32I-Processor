@@ -1,3 +1,5 @@
+`timescale 1ns/1ps
+
 module maindec (
     
             input logic   [6:0]     opcode,

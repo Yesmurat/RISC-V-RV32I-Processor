@@ -8,7 +8,7 @@ module imem (
 
     );
 
-    logic [31:0] ROM[255:0];
+    (* ram_style = "distributed" *) logic [31:0] ROM[255:0];
     
     initial $readmemh("./memory/imem.mem", ROM);
 

@@ -1,3 +1,5 @@
+`timescale 1ns/1ps
+
 module hazard (
     
         input logic  [4:0] Rs1D, Rs2D,

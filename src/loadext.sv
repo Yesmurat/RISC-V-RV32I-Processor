@@ -1,3 +1,5 @@
+`timescale 1ns/1ps
+
 module loadext (
 
     input logic  [2:0]  LoadTypeM, // funct3M
@@ -9,21 +11,23 @@ module loadext (
 
     always_comb begin
 
-        case (LoadTypeM)
+        unique case (LoadTypeM)
 
-            3'b000: case (byteAddrM) // lb
+            3'b000: begin // lb
 
-                2'b00: load_data = {{24{RD_data[7]}}, RD_data[7:0]};
+                unique case (byteAddrM)
 
-                2'b01: load_data = {{24{RD_data[15]}}, RD_data[15:8]};
+                    2'b00: load_data = {{24{RD_data[7]}}, RD_data[7:0]};
 
-                2'b10: load_data = {{24{RD_data[23]}}, RD_data[23:16]};
+                    2'b01: load_data = {{24{RD_data[15]}}, RD_data[15:8]};
 
-                2'b11: load_data = {{24{RD_data[31]}}, RD_data[31:24]};
+                    2'b10: load_data = {{24{RD_data[23]}}, RD_data[23:16]};
 
-                default: load_data = 31'b0;
+                    2'b11: load_data = {{24{RD_data[31]}}, RD_data[31:24]};
 
-            endcase
+                endcase
+                
+            end
 
             3'b100: begin // lbu
 
@@ -36,8 +40,6 @@ module loadext (
                     2'b10: load_data = {24'b0, RD_data[23:16]};
 
                     2'b11: load_data = {24'b0, RD_data[31:24]};
-
-                    default: load_data = 31'b0;
 
                 endcase
                 
@@ -81,7 +83,7 @@ module loadext (
                 load_data = RD_data; // lw
                 
             end
-            
+
             default: begin
 
                 load_data = 32'b0;

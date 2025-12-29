@@ -31,7 +31,7 @@ set_property -dict { PACKAGE_PIN E13   IOSTANDARD LVCMOS33 } [get_ports { LED[2]
 set_property -dict { PACKAGE_PIN H15   IOSTANDARD LVCMOS33 } [get_ports { LED[3] }]; #IO_L18P_T2_A24_15 Sch=led[5]
 
 ## Buttons
-set_property -dict { PACKAGE_PIN G15   IOSTANDARD LVCMOS33 } [get_ports { clr }]; #IO_L18N_T2_A23_15 Sch=btn[0]
+set_property -dict { PACKAGE_PIN G15   IOSTANDARD LVCMOS33 } [get_ports { reset }]; #IO_L18N_T2_A23_15 Sch=btn[0]
 #set_property -dict { PACKAGE_PIN K16   IOSTANDARD LVCMOS33 } [get_ports { btn[1] }]; #IO_L19P_T3_A22_15 Sch=btn[1]
 #set_property -dict { PACKAGE_PIN J16   IOSTANDARD LVCMOS33 } [get_ports { btn[2] }]; #IO_L19N_T3_A21_VREF_15 Sch=btn[2]
 #set_property -dict { PACKAGE_PIN H13   IOSTANDARD LVCMOS33 } [get_ports { btn[3] }]; #IO_L20P_T3_A20_15 Sch=btn[3]

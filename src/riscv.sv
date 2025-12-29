@@ -1,3 +1,5 @@
+`timescale 1ns/1ps
+
 module riscv (
 
         input logic         clk,
@@ -30,7 +32,7 @@ module riscv (
 
     logic [6:0] opcode;
     logic [2:0] funct3;
-    logic [6:0] funct7;
+    logic funct7b5;
 
     // Hazard unit wires
     logic StallF;
@@ -49,7 +51,7 @@ module riscv (
 
         .opcode         (opcode),
         .funct3         (funct3), // input
-        .funct7         (funct7),
+        .funct7b5       (funct7b5),
         
         .RegWriteD      (RegWriteD),
         .ResultSrcD     (ResultSrcD),
@@ -101,7 +103,7 @@ module riscv (
         // outputs to controller
         .opcode             (opcode),
         .funct3             (funct3), // output
-        .funct7             (funct7),
+        .funct7b5           (funct7b5),
 
         // outputs to hazard unit
         .Rs1D               (Rs1D),

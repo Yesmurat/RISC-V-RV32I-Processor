@@ -1,5 +1,5 @@
-// Top module of RV32I RISC-V processor in SystemVerilog
 // top module combines riscv with data and instruction memories
+
 `timescale 1ns/1ps
 
 module top (

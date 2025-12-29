@@ -1,3 +1,5 @@
+`timescale 1ns/1ps
+
 module aludec (
     
     input logic         opb5, // for sub detection
