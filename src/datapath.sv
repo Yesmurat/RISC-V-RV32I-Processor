@@ -144,14 +144,15 @@ module datapath (
     logic [31:0] WriteDataE;
     logic [31:0] ALUResultE;
 
-    logic RegWriteE;
+    logic       RegWriteE;
     logic [1:0] ResultSrcE;
-    logic MemWriteE, JumpE, BranchE;
+    logic       MemWriteE, JumpE, BranchE;
     logic [3:0] ALUControlE;
     logic [2:0] funct3E;
-    logic branchTakenE;
-    logic jumpRegE;
-    logic SrcAsrcE, ALUSrcE;
+    logic       branchTakenE;
+    logic       jumpRegE;
+    logic       SrcAsrcE;
+    logic       ALUSrcE;
 
     IDEXregister idexreg(
 
@@ -315,41 +316,49 @@ module datapath (
 
     );
 
-    // byte loads
     always_comb begin
 
-        unique case (funct3M) // funct3 determines store type
+        byteEnable = 4'b0000;
 
-            3'b000: begin
-                
-                unique case (byteAddrM)
+        if (MemWriteM) begin
 
-                    2'b00: byteEnable = 4'b0001; // enable byte 0 
-                    2'b01: byteEnable = 4'b0010; // enable byte 1
-                    2'b10: byteEnable = 4'b0100; // enable byte 2
-                    2'b11: byteEnable = 4'b1000; // enable byte 3
-                
-                endcase
-                
-            end
+            unique case (funct3M)
 
-            3'b001: begin
+                3'b000: begin // sb
 
-                byteEnable = (byteAddrM[1] == 0) // sh
-                                ? 4'b0011 // low half
-                                : 4'b1100; // high half
-                
-            end
+                    case (byteAddrM)
 
-            3'b010: begin
+                        2'b00: byteEnable = 4'b0001;
+                        2'b01: byteEnable = 4'b0010;
+                        2'b10: byteEnable = 4'b0100;
+                        2'b11: byteEnable = 4'b1000;
 
-                byteEnable = 4'b1111;
-                
-            end
+                    endcase
 
-        endcase
+                end
 
-    end
+                3'b001: begin // sh
+
+                    byteEnable = (byteAddrM[1] == 1'b0)
+                                    ? 4'b0011
+                                    : 4'b1100;
+
+                end
+
+                3'b010: begin // SW
+
+                    byteEnable = 4'b1111;
+
+                end
+
+            endcase
+
+        end
+
+    end // make a separate file for this block
+
+    logic [31:0] WriteDataM_shifted;
+    assign WriteDataM_shifted = WriteDataM << (8 * byteAddrM);
 
     loadext loadext(
 
@@ -398,12 +407,12 @@ module datapath (
 
     mux4 ResultWmux(
 
-        .d0 (ALUResultW),
-        .d1 (ReadDataW),
-        .d2 (PCPlus4W),
-        .d3 (ImmExtW),
-        .s  (ResultSrcW),
-        .y  (ResultW)
+        .d0     (ALUResultW),
+        .d1     (ReadDataW),
+        .d2     (PCPlus4W),
+        .d3     (ImmExtW),
+        .s      (ResultSrcW),
+        .y      (ResultW)
 
     );
 
