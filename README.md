@@ -1,8 +1,10 @@
 # DragonCore
 
-## Overview
-This project implements a **5-stage pipelined RV32I RISC-V processor** in SystemVerilog.  
-It follows the classic pipeline structure and includes hazard detection, forwarding logic, and memory modules built using FPGA resources.
+## DragonCore is a **5-stage pipelined RV32I RISC-V processor** in SystemVerilog.
+
+The design follows the classic in-order pipeline and supports full execution of the RV32I base integer instruction set. Beyond functional correctness, the project focuses on clean RTL architecture using modern SystemVerilog features to reduce wiring complexity and improve maintainability.
+
+The core has been **simulated and verified in Vivado** and **successfully deployed on the Arty S7-25.
 
 **Pipeline stages:**
 - Instruction Fetch (IF)
@@ -10,8 +12,6 @@ It follows the classic pipeline structure and includes hazard detection, forward
 - Execute (EX)
 - Memory Access (MEM)
 - Write Back (WB)
-
-The design was **simulated and verified in Vivado** and later **tested on the Arty S7-25 FPGA board**.
 
 ---
 
@@ -25,7 +25,7 @@ The design was **simulated and verified in Vivado** and later **tested on the Ar
 ---
 
 ## Verification
-- **40+ directed test cases** covering all instruction types
+- **directed test cases** covering all instruction types
 - Testbench includes **clock, reset, and realistic instruction sequences**
 - Waveform analysis performed in **Vivado Simulator**
 - Example assembly programs located in `tests/`
@@ -36,28 +36,13 @@ The design was **simulated and verified in Vivado** and later **tested on the Ar
 ## FPGA Implementation
 - **Target Board:** Arty S7-25 (Xilinx Spartan-7)
 - **Implementation Tool:** Xilinx Vivado
-- **Max Frequency (Fmax):** ~100 MHz (post-implementation)
-- **Instruction & Data Memories:** Implemented using LUTs (distributed memory)
+- **Post-implementation Fmax:** ~100 MHz
+- **Instruction & Data Memories:** Implemented using LUT-based distributed memory
 - **Constraints File:** `xdc/arty_s7_25.xdc`
-- **Design tested successfully on real FPGA hardware**
 
 ---
 
-## Simulation
-To run a functional simulation in Vivado:
-```bash
-# Read your RTL and testbench files
-read_verilog [glob ./src/*.sv]
-read_verilog ./tb/top_tb.sv
-
-# Set the top-level testbench module
-set_property top top_tb [current_fileset]
-
-# Elaborate and launch simulation
-launch_simulation
-
-# (Optional) Add signals to waveform
-add_wave *
-
-# Run the simulation
-run all
+## Future Work
+- RV64I support
+- Instruction and data caches
+- AXI-based memory interface
