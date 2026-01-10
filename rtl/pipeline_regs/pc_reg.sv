@@ -1,4 +1,4 @@
-module IF (
+module pc_reg (
 
     input logic         clk,
     input logic         en,
@@ -9,7 +9,7 @@ module IF (
     
 );
 
-    always_ff @( posedge clk or posedge reset ) begin : IF_register
+    always_ff @( posedge clk or posedge reset ) begin : pc_register
 
         if (reset) begin
             PC <= '0;

@@ -1,24 +1,24 @@
-module ID (
-
+module idex_reg (
+    
     input logic clk,
     input logic en,
     input logic reset,
 
-    ifid_if.rd inputs,
-    ifid_if.wr outputs
-    
+    idex_if.rd inputs,
+    idex_if.wr outputs
+
 );
 
-    always_ff @( posedge clk or posedge reset ) begin : ID_register
-        
+    always_ff @( posedge clk or posedge reset ) begin : EX_register
+
         if (reset) begin
             outputs <= '0;
         end
 
         else if (en) begin
-            outputs <= inputs;    
+            outputs <= inputs;
         end
-
+        
     end
     
 endmodule

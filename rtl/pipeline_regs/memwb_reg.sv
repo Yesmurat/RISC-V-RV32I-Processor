@@ -1,16 +1,15 @@
-module EX (
+module memwb_reg (
     
     input logic clk,
     input logic en,
     input logic reset,
 
-    idex_if.rd inputs,
-    idex_if.wr outputs
-
+    memwb_if.rd inputs,
+    memwb_if.wr outputs
 );
 
-    always_ff @( posedge clk or posedge reset ) begin : EX_register
-
+    always_ff @( posedge clk ) begin : memwb_register
+        
         if (reset) begin
             outputs <= '0;
         end
@@ -18,7 +17,7 @@ module EX (
         else if (en) begin
             outputs <= inputs;
         end
-        
+
     end
     
 endmodule

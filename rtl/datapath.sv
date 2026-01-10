@@ -30,10 +30,18 @@ module datapath (
 );
 
     // pipeline interfaces
-    ifid_if  ifid();
-    idex_if  idex();
-    exmem_if exmem();
-    memwb_if memwb();
+
+    ifid_if ifid_d();
+    ifid_if ifid_q();
+
+    idex_if idex_d();
+    idex_if idex_q();
+
+    exmem_if exmem_d();
+    exmem_if exmem_q();
+
+    memwb_if memwb_d();
+    memwb_if memwb_q();
 
     logic [31:0] PCF_new;
     logic [31:0] PCPlus4F;
@@ -53,7 +61,7 @@ module datapath (
 
     );
 
-    IF if_reg (
+    pc_reg PC_reg (
 
         .clk        (clk),
         .en         (~StallF),
@@ -67,20 +75,18 @@ module datapath (
     if_stage IF (
 
         .PC         (PCF),
-        .outputs    ()
+        .outputs    (ifid_d)
 
     );
 
-    assign PCPlus4F = ifid.data.PCPlus4;
-
-    ID id_reg (
+    ifid_reg IFID_reg (
 
         .clk        (clk),
         .en         (~StallD),
         .reset      (reset | FlushD),
 
-        .inputs     (),
-        .outputs    ()
+        .inputs     (ifid_d),
+        .outputs    (ifid_q)
 
     );
 
@@ -88,21 +94,26 @@ module datapath (
 
         .clk            (clk),
         .reset          (reset | FlushD),
-        // .en             (~StallD),
         
         .RegWriteW      (RegWriteW),
         .RdW            (RdW),
         .ResultW        (ResultW),
         
-        .inputs         (),
-        .outputs        ()
+        .inputs         (ifid_q),
+        .outputs        (idex_d)
 
     );
 
-    assign Rs1D = idex.data.Rs1;
-    assign Rs2D = idex.data.Rs2;
+    idex_reg IDEX_reg (
 
-    EX ex_reg ();
+        .clk        (clk),
+        .en         (1'b1),
+        .reset      (reset | FlushE),
+
+        .inputs     (idex_d),
+        .outputs    (idex_q)
+
+    );
 
     ex_stage EX (
 
@@ -117,39 +128,61 @@ module datapath (
         .Rs1E           (Rs1E),
         .Rs2E           (Rs2E),
 
-        .inputs         (),
-        .outputs        ()
+        .inputs         (idex_q),
+        .outputs        (exmem_d)
 
     );
 
+    exmem_reg EXMEM_reg (
 
-    assign RdE = idex.data.Rd;
-    assign ResultSrcE_zero = idex.ctrl.ResultSrc[0];
+        .clk        (clk),
+        .en         (1'b1),
+        .reset      (reset),
 
-    MEM mem_reg ();
+        .inputs     (exmem_d),
+        .outputs    (exmem_q)
+
+    );
 
     mem_stage MEM (
 
         .clk        (clk),
-        .inputs     (),
-        .outputs    ()
+        .inputs     (exmem_q),
+        .outputs    (memwb_d)
 
     );
 
-    assign RdM = memwb.data.Rd;
-    assign RegWriteM = memwb.ctrl.RegWrite;
-    assign ALUResultM = memwb.data.ALUResult;
+    memwb_reg MEMWB_reg (
 
-    WB wb_reg ();
+        .clk        (clk),
+        .en         (1'b1),
+        .reset      (reset),
+
+        .inputs     (memwb_d),
+        .outputs    (memwb_q)
+
+    );
 
     wb_stage WB (
 
-        .inputs         (),
+        .inputs         (memwb_q),
 
         .RegWriteW      (RegWriteW),
         .RdW            (RdW),
         .ResultW        (ResultW)
 
     );
+
+    assign PCPlus4F = ifid_d.data.PCPlus4;
+
+    assign Rs1D = ifid_q.data.Rs1;
+    assign Rs2D = ifid_q.data.Rs2;
+
+    assign RdE = idex_q.data.Rd;
+    assign ResultSrcE_zero = idex_q.ctrl.ResultSrc[0];
+
+    assign RdM = exmem_q.data.Rd;
+    assign RegWriteM = exmem_q.ctrl.RegWrite;
+    assign ALUResultM = exmem_q.data.ALUResult;
 
 endmodule
