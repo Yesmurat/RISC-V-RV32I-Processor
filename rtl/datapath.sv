@@ -29,20 +29,6 @@ module datapath (
 
 );
 
-    // pipeline interfaces
-
-    ifid_if ifid_d();
-    ifid_if ifid_q();
-
-    idex_if idex_d();
-    idex_if idex_q();
-
-    exmem_if exmem_d();
-    exmem_if exmem_q();
-
-    memwb_if memwb_d();
-    memwb_if memwb_q();
-
     logic [31:0] PCF_new;
     logic [31:0] PCPlus4F;
     logic [31:0] PCF;
@@ -75,7 +61,7 @@ module datapath (
     if_stage IF (
 
         .PC         (PCF),
-        .outputs    (ifid_d)
+        .outputs    ()
 
     );
 
@@ -85,8 +71,8 @@ module datapath (
         .en         (~StallD),
         .reset      (reset | FlushD),
 
-        .inputs     (ifid_d),
-        .outputs    (ifid_q)
+        .inputs     (),
+        .outputs    ()
 
     );
 
@@ -99,8 +85,8 @@ module datapath (
         .RdW            (RdW),
         .ResultW        (ResultW),
         
-        .inputs         (ifid_q),
-        .outputs        (idex_d)
+        .inputs         (),
+        .outputs        ()
 
     );
 
@@ -110,8 +96,8 @@ module datapath (
         .en         (1'b1),
         .reset      (reset | FlushE),
 
-        .inputs     (idex_d),
-        .outputs    (idex_q)
+        .inputs     (),
+        .outputs    ()
 
     );
 
@@ -128,8 +114,8 @@ module datapath (
         .Rs1E           (Rs1E),
         .Rs2E           (Rs2E),
 
-        .inputs         (idex_q),
-        .outputs        (exmem_d)
+        .inputs         (),
+        .outputs        ()
 
     );
 
@@ -139,16 +125,16 @@ module datapath (
         .en         (1'b1),
         .reset      (reset),
 
-        .inputs     (exmem_d),
-        .outputs    (exmem_q)
+        .inputs     (),
+        .outputs    ()
 
     );
 
     mem_stage MEM (
 
         .clk        (clk),
-        .inputs     (exmem_q),
-        .outputs    (memwb_d)
+        .inputs     (),
+        .outputs    ()
 
     );
 
@@ -158,14 +144,14 @@ module datapath (
         .en         (1'b1),
         .reset      (reset),
 
-        .inputs     (memwb_d),
-        .outputs    (memwb_q)
+        .inputs     (),
+        .outputs    ()
 
     );
 
     wb_stage WB (
 
-        .inputs         (memwb_q),
+        .inputs         (),
 
         .RegWriteW      (RegWriteW),
         .RdW            (RdW),
@@ -173,16 +159,16 @@ module datapath (
 
     );
 
-    assign PCPlus4F = ifid_d.data.PCPlus4;
+    assign PCPlus4F = ...;
 
-    assign Rs1D = ifid_q.data.Rs1;
-    assign Rs2D = ifid_q.data.Rs2;
+    assign Rs1D = ...;
+    assign Rs2D = ...;
 
-    assign RdE = idex_q.data.Rd;
-    assign ResultSrcE_zero = idex_q.ctrl.ResultSrc[0];
+    assign RdE = ...;
+    assign ResultSrcE_zero = ...;
 
-    assign RdM = exmem_q.data.Rd;
-    assign RegWriteM = exmem_q.ctrl.RegWrite;
-    assign ALUResultM = exmem_q.data.ALUResult;
+    assign RdM = ...;
+    assign RegWriteM = ...;
+    assign ALUResultM = ...;
 
 endmodule

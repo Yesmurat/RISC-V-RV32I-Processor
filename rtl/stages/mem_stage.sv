@@ -1,9 +1,12 @@
+import pipeline_pkg::exmem_t;
+import pipeline_pkg::memwb_t;
+
 module mem_stage (
     
         input logic clk,
 
-        exmem_if.rd inputs,
-        memwb_if.wr outputs
+        input idex_t inputs,
+        output exmem_t outputs
 
 );
 
@@ -12,9 +15,9 @@ module mem_stage (
 
     wdext wdext(
 
-        .MemWriteM  (inputs.ctrl.MemWrite),
-        .byteAddrM  (inputs.data.ALUResult[1:0]),
-        .funct3M    (inputs.ctrl.funct3),
+        .MemWriteM  (inputs.MemWrite),
+        .byteAddrM  (inputs.ALUResult[1:0]),
+        .funct3M    (inputs.funct3),
         
         .byteEnable (byteEnable)
 
@@ -23,10 +26,10 @@ module mem_stage (
     dmem data_memory(
 
         .clk            (clk),
-        .we             (inputs.ctrl.MemWrite),
+        .we             (inputs.MemWrite),
         .byteEnable     (byteEnable),
-        .address        (inputs.data.ALUResult),
-        .wd             (inputs.data.WriteData), // WriteDataM
+        .address        (inputs.ALUResult),
+        .wd             (inputs.WriteData), // WriteDataM
 
         .rd             (RD_data)
 
@@ -34,20 +37,20 @@ module mem_stage (
 
     loadext loadext(
 
-        .LoadTypeM  (inputs.ctrl.funct3),
+        .LoadTypeM  (inputs.funct3),
         .RD_data    (RD_data),
-        .byteAddrM  (inputs.data.ALUResult[1:0]),
+        .byteAddrM  (inputs.ALUResult[1:0]),
 
-        .load_data  (outputs.data.load_data)
+        .load_data  (outputs.load_data)
 
     );
 
-    assign outputs.ctrl.RegWrite = inputs.ctrl.RegWrite;
-    assign outputs.ctrl.ResultSrc = inputs.ctrl.ResultSrc;
+    assign outputs.RegWrite = inputs.RegWrite;
+    assign outputs.ResultSrc = inputs.ResultSrc;
 
-    assign outputs.data.ALUResult = inputs.data.ALUResult;
-    assign outputs.data.Rd = inputs.data.Rd;
-    assign outputs.data.PCPlus4 = inputs.data.PCPlus4;
-    assign outputs.data.ImmExt = inputs.data.ImmExt;
+    assign outputs.ALUResult = inputs.ALUResult;
+    assign outputs.Rd = inputs.Rd;
+    assign outputs.PCPlus4 = inputs.PCPlus4;
+    assign outputs.ImmExt = inputs.ImmExt;
 
 endmodule

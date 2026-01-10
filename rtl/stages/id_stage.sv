@@ -1,3 +1,6 @@
+import pipeline_pkg::ifid_t;
+import pipeline_pkg::idex_t;
+
 module id_stage (
     
         input logic         clk,
@@ -7,15 +10,15 @@ module id_stage (
         input logic [4:0]    RdW,
         input logic [31:0]   ResultW,
 
-        ifid_if.rd inputs,
-        idex_if.wr outputs
+        input ifid_t inputs,
+        output idex_t outputs
 
 );
 
     logic [31:0] Instr;
     logic [2:0] ImmSrc;
 
-    assign Instr = inputs.data.instr;
+    assign Instr = inputs.instr;
 
     controller control_unit(
 
@@ -23,16 +26,16 @@ module id_stage (
         .funct3         ( Instr[14:12]            ),
         .funct7b5       ( Instr[30]               ),
 
-        .RegWriteD      ( outputs.ctrl.RegWrite   ),
-        .ResultSrcD     ( outputs.ctrl.ResultSrc  ),
-        .MemWriteD      ( outputs.ctrl.MemWrite   ),
-        .JumpD          ( outputs.ctrl.Jump       ),
-        .BranchD        ( outputs.ctrl.Branch     ),
-        .ALUControlD    ( outputs.ctrl.ALUControl ),
-        .ALUSrcD        ( outputs.ctrl.ALUSrc     ),
-        .ImmSrcD        ( ImmSrc                  ),
-        .SrcAsrcD       ( outputs.ctrl.SrcAsrc    ),
-        .jumpRegD       ( outputs.ctrl.jumpReg    )
+        .RegWriteD      ( outputs.RegWrite   ),
+        .ResultSrcD     ( outputs.ResultSrc  ),
+        .MemWriteD      ( outputs.MemWrite   ),
+        .JumpD          ( outputs.Jump       ),
+        .BranchD        ( outputs.Branch     ),
+        .ALUControlD    ( outputs.ALUControl ),
+        .ALUSrcD        ( outputs.ALUSrc     ),
+        .ImmSrcD        ( ImmSrc             ),
+        .SrcAsrcD       ( outputs.SrcAsrc    ),
+        .jumpRegD       ( outputs.jumpReg    )
 
     );
 
@@ -48,8 +51,8 @@ module id_stage (
         .a3     ( RdW              ),
         .wd3    ( ResultW          ),
 
-        .rd1    ( outputs.data.RD1 ),
-        .rd2    ( outputs.data.RD2 )
+        .rd1    ( outputs.RD1      ),
+        .rd2    ( outputs.RD2      )
 
     );
 
@@ -58,17 +61,17 @@ module id_stage (
         .instr_31_7     ( Instr[31:7]         ),
         .immsrc         ( ImmSrc              ),
 
-        .immext         ( outputs.data.ImmExt )
+        .immext         ( outputs.ImmExt      )
 
     );
 
-    assign outputs.data.PC = inputs.data.PC;
-    assign outputs.data.PCPlus4 = inputs.data.PCPlus4;
+    assign outputs.PC = inputs.PC;
+    assign outputs.PCPlus4 = inputs.PCPlus4;
 
-    assign outputs.data.Rs1 = Instr[19:15];
-    assign outputs.data.Rs2 = Instr[24:20];
-    assign outputs.data.Rd =  Instr[11:7];
+    assign outputs.Rs1 = Instr[19:15];
+    assign outputs.Rs2 = Instr[24:20];
+    assign outputs.Rd =  Instr[11:7];
 
-    assign outputs.ctrl.funct3 = Instr[14:12];
+    assign outputs.funct3 = Instr[14:12];
 
 endmodule

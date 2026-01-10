@@ -1,6 +1,8 @@
+import pipeline_pkg::memwb_t;
+
 module wb_stage (
 
-        memwb_if.rd inputs,
+        input memwb_t inputs,
         
         output logic        RegWriteW,
         output logic [4:0]  RdW,
@@ -10,16 +12,16 @@ module wb_stage (
 
     mux4 ResultWmux(
 
-        .d0     ( inputs.data.ALUResult ),
-        .d1     ( inputs.data.load_data ),
-        .d2     ( inputs.data.PCPlus4    ),
-        .d3     ( inputs.data.ImmExt    ),
-        .s      ( inputs.ctrl.ResultSrc ),
+        .d0     ( inputs.ALUResult ),
+        .d1     ( inputs.load_data ),
+        .d2     ( inputs.PCPlus4    ),
+        .d3     ( inputs.ImmExt    ),
+        .s      ( inputs.ResultSrc ),
         .y      ( ResultW               )
 
     );
 
-    assign RdW = inputs.data.Rd;
-    assign RegWriteW = inputs.ctrl.RegWrite;
+    assign RdW = inputs.Rd;
+    assign RegWriteW = inputs.RegWrite;
 
 endmodule
