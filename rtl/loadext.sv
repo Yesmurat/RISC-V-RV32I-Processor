@@ -1,3 +1,5 @@
+// consider using interface with funct3 interpretation variation for readability
+
 `timescale 1ns/1ps
 
 module loadext (
@@ -82,6 +84,12 @@ module loadext (
 
                 load_data = RD_data; // lw
                 
+            end
+
+            default: begin
+                
+                load_data = 32'b0;
+
             end
 
         endcase

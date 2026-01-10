@@ -1,7 +1,6 @@
 module mem_stage (
     
         input logic clk,
-        input logic reset,
 
         exmem_if.rd inputs,
         memwb_if.wr outputs

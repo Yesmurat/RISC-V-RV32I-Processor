@@ -92,21 +92,21 @@ module datapath (
         .PCSrcE         (PCSrcE),
         .PCTargetE      (PCTargetE),
 
+        .Rs1E           (Rs1E),
+        .Rs2E           (Rs2E),
+
         .inputs         (idex),
         .outputs        (exmem)
 
     );
 
-    assign Rs1E = idex.data.Rs1;
-    assign Rs2E = idex.data.Rs2;
-    assign RdE = idex.data.Rd;
 
+    assign RdE = idex.data.Rd;
     assign ResultSrcE_zero = idex.ctrl.ResultSrc[0];
 
     mem_stage MEM (
 
         .clk        (clk),
-        .reset      (reset),
         .inputs     (exmem),
         .outputs    (memwb)
 

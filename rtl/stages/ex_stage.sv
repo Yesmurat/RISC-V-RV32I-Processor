@@ -8,6 +8,7 @@ module ex_stage (
         output logic        PCSrcE,
         output logic [31:0] PCTargetE,
 
+        output logic [4:0]  Rs1E, Rs2E,
 
         idex_if.rd inputs,
         exmem_if.wr outputs
@@ -91,5 +92,8 @@ module ex_stage (
     assign outputs.data.PCPlus4 = inputs.data.PCPlus4;
     assign outputs.data.Rd = inputs.data.Rd;
     assign outputs.data.ImmExt = inputs.data.ImmExt;
+
+    assign Rs1E = inputs.data.Rs1;
+    assign Rs2E = inputs.data.Rs2;
 
 endmodule

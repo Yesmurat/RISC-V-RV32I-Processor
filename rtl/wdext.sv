@@ -44,6 +44,12 @@ module wdext (
 
                 end
 
+                default: begin
+
+                    byteEnable = 4'b0000;
+                    
+                end
+
             endcase
 
         end
