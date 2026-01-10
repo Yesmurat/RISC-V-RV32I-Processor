@@ -70,8 +70,8 @@ module datapath (
         .reset          (reset | FlushD),
         // .en             (~StallD),
         
-        .RegWriteW      (memwb.ctrl.RegWrite),
-        .RdW            (memwb.data.Rd),
+        .RegWriteW      (RegWriteW),
+        .RdW            (RdW),
         .ResultW        (ResultW),
         
         .inputs         (ifid),
@@ -120,13 +120,10 @@ module datapath (
 
         .inputs         (memwb.rd),
 
-        .RegWriteW      (memwb.ctrl.RegWrite),
-        .RdW            (memwb.data.Rd),
+        .RegWriteW      (RegWriteW),
+        .RdW            (RdW),
         .ResultW        (ResultW)
 
     );
-
-    assign RdW = memwb.data.Rd;
-    assign RegWriteW = memwb.ctrl.RegWrite;
 
 endmodule
