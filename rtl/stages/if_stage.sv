@@ -29,7 +29,7 @@ module if_stage #(
 
     ) instr_mem(
 
-        .address    ( PC[XLEN-1:0] ),
+        .address    ( PC[ADDR_WIDTH-1:0] ),
         .rd         (outputs.instr)
 
     );

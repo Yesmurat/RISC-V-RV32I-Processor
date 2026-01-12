@@ -9,7 +9,7 @@ module imem #(
         parameter ADDR_WIDTH = 8 // 256 instructions
 ) (
     
-        input logic  [(ADDR_WIDTH-2) - 1 : 0] address,
+        input logic  [ADDR_WIDTH-1:0] address,
         output logic [31:0] rd
 
     );
