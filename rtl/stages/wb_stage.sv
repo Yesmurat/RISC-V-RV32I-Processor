@@ -2,13 +2,15 @@
 
 import pipeline_pkg::memwb_t;
 
-module wb_stage (
+module wb_stage #(
+    parameter XLEN = 32
+) (
 
         input memwb_t inputs,
         
         output logic        RegWriteW,
         output logic [4:0]  RdW,
-        output logic [31:0] ResultW
+        output logic [XLEN-1:0] ResultW
 
 );
 
