@@ -1,7 +1,3 @@
-/*
-Try to instantiate this moduel inside dmem.sv so that all bits of ALUResultM are read by memory and wdext
-*/
-
 module wdext (
 
     input logic MemWriteM,

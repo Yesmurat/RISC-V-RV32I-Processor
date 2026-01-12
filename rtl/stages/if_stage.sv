@@ -1,9 +1,10 @@
 import pipeline_pkg::ifid_t;
 
-module if_stage (
+module if_stage
+    #( parameter XLEN = 32 ) (
     
-        input logic  [31:0] PC,
-        output logic [31:0] PCPlus4F,
+        input logic  [XLEN-1:0] PC,
+        output logic [XLEN-1:0] PCPlus4F,
         
         output ifid_t outputs
         
@@ -11,15 +12,15 @@ module if_stage (
 
     always_comb begin
 
-        outputs.PC = PC;
-        outputs.PCPlus4 = PC + 32'd4;
-        PCPlus4F = PC + 32'd4;
+        outputs.PC      = PC;
+        outputs.PCPlus4 = PC + 'd4;
+        PCPlus4F        = PC + 'd4;
         
     end
 
     (* dont_touch = "true" *) imem instr_mem(
 
-        .address    (PC[31:2]),
+        .address    ( PC[XLEN-1:2] ),
         .rd         (outputs.instr)
 
     );
