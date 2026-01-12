@@ -21,7 +21,7 @@ module controller (
 
     logic [1:0] ALUOp;
 
-    maindec md(
+    (* dont_touch = "true" *) maindec md(
 
         .opcode     (opcode),
         .ResultSrcD (ResultSrcD),
@@ -37,7 +37,7 @@ module controller (
 
     );
 
-    aludec ad(
+    (* dont_touch = "true" *) aludec ad(
 
         .opb5       (opcode[5]),
         .funct3     (funct3),

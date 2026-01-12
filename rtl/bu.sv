@@ -1,8 +1,9 @@
 `timescale 1ns/1ps
 
-module branch_unit (
+module branch_unit
+    #( parameter XLEN = 32 ) (
     
-        input logic [31:0] SrcAE, SrcBE,
+        input logic [XLEN-1:0] SrcAE, SrcBE,
         input logic [2:0]  funct3E,
         output logic       branchTakenE
 

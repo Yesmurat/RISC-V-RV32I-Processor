@@ -19,35 +19,35 @@ module mem_stage (
     logic [3:0] byteEnable;
     logic [31:0] RD_data;
 
-    wdext wdext(
+    (* dont_touch = "true" *) wdext wdext(
 
-        .MemWriteM  (inputs.MemWrite),
-        .byteAddrM  (inputs.ALUResult[1:0]),
-        .funct3M    (inputs.funct3),
+        .MemWriteM  ( inputs.MemWrite ),
+        .byteAddrM  ( inputs.ALUResult[1:0] ),
+        .funct3M    ( inputs.funct3 ),
         
-        .byteEnable (byteEnable)
+        .byteEnable ( byteEnable )
 
     );
 
     dmem data_memory(
 
-        .clk            (clk),
-        .we             (inputs.MemWrite),
-        .byteEnable     (byteEnable),
-        .address        (inputs.ALUResult[31:2]),
-        .wd             (inputs.WriteData), // WriteDataM
+        .clk            ( clk ),
+        .we             ( inputs.MemWrite ),
+        .byteEnable     ( byteEnable ),
+        .address        ( inputs.ALUResult[31:2] ),
+        .wd             ( inputs.WriteData ), // WriteDataM
 
-        .rd             (RD_data)
+        .rd             ( RD_data )
 
     );
 
-    loadext loadext(
+    (* dont_touch = "true" *) loadext loadext(
 
-        .LoadTypeM  (inputs.funct3),
-        .RD_data    (RD_data),
-        .byteAddrM  (inputs.ALUResult[1:0]),
+        .LoadTypeM  ( inputs.funct3 ),
+        .RD_data    ( RD_data ),
+        .byteAddrM  ( inputs.ALUResult[1:0] ),
 
-        .load_data  (outputs.load_data)
+        .load_data  ( outputs.load_data )
 
     );
 

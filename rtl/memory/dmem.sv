@@ -19,7 +19,7 @@ module dmem (
 
     always_ff @(posedge clk) begin
 
-        if (we) 
+        if (we) begin
 
             if (byteEnable[0])
                 RAM[ address ] [7:0] <= wd[7:0];
@@ -33,7 +33,13 @@ module dmem (
             if (byteEnable[3])
                 RAM[ address ] [31:24] <= wd[31:24];
 
+        end
+
+        else begin
+
             rd <= RAM[ address ];
+            
+        end
 
     end
 

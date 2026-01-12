@@ -1,3 +1,5 @@
+(* dont_touch = "true" *)
+
 `timescale 1ns/1ps
 // Instruction Memory 256 words
 

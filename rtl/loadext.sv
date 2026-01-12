@@ -1,13 +1,13 @@
-// consider using interface with funct3 interpretation variation for readability
-
 `timescale 1ns/1ps
 
-module loadext (
+module loadext
+    #( parameter XLEN = 32 ) (
 
-    input logic  [2:0]  LoadTypeM, // funct3M
-    input logic  [31:0] RD_data,
-    input logic  [1:0]  byteAddrM,
-    output logic [31:0] load_data
+    input logic  [2:0]  LoadTypeM, // funct3
+    input logic  [XLEN-1:0] RD_data,
+    input logic  [ $clog(XLEN/8)-1 : 0 ]  byteAddrM,
+    
+    output logic [XLEN-1:0] load_data
 
 );
 

@@ -1,3 +1,5 @@
+(* dont_touch = "true" *)
+
 import hazard_io::*;
 
 `timescale 1ns/1ps

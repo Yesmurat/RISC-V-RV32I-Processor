@@ -1,8 +1,11 @@
-module mux2 (
+module mux2
+    #( parameter XLEN = 32 ) (
     
-        input logic  [31:0] d0, d1,
+        input logic  [ XLEN-1 : 0 ] d0,
+        input logic  [ XLEN-1 : 0 ] d1,
         input logic         s,
-        output logic [31:0] y
+
+        output logic [ XLEN-1 : 0 ] y
 
     );
     
@@ -10,11 +13,15 @@ module mux2 (
     
 endmodule // 2-to-1 multiplexer
 
-module mux3 (
+module mux3
+    #( parameter XLEN = 32 ) (
     
-        input logic  [31:0] d0, d1, d2,
+        input logic  [ XLEN-1 : 0 ] d0,
+        input logic  [ XLEN-1 : 0 ] d1,
+        input logic  [ XLEN-1 : 0 ] d2,
         input logic  [1:0]  s,
-        output logic [31:0] y
+
+        output logic [ XLEN-1 : 0 ] y
         
     );
     
@@ -22,11 +29,16 @@ module mux3 (
 
 endmodule // 3-to-1 mux
 
-module mux4 (
+module mux4 
+    #( parameter XLEN = 32 ) (
     
-        input logic  [31:0] d0, d1, d2, d3,
+        input logic  [ XLEN-1 : 0 ] d0,
+        input logic  [ XLEN-1 : 0 ] d1,
+        input logic  [ XLEN-1 : 0 ] d2,
+        input logic  [ XLEN-1 : 0 ] d3,
         input logic  [1:0]  s,
-        output logic [31:0] y
+
+        output logic [ XLEN-1 : 0 ] y
         
     );
     

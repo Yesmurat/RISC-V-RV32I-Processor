@@ -1,3 +1,5 @@
+(* dont_touch = "true" *)
+
 import pipeline_pkg::memwb_t;
 
 module wb_stage (

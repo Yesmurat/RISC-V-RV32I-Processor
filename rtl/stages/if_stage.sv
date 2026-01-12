@@ -3,10 +3,9 @@ import pipeline_pkg::ifid_t;
 module if_stage (
     
         input logic  [31:0] PC,
+        output logic [31:0] PCPlus4F,
         
-        output ifid_t outputs,
-
-        output logic [31:0] PCPlus4F
+        output ifid_t outputs
         
     );
 
@@ -18,7 +17,7 @@ module if_stage (
         
     end
 
-    imem instr_mem(
+    (* dont_touch = "true" *) imem instr_mem(
 
         .address    (PC[31:2]),
         .rd         (outputs.instr)

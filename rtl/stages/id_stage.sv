@@ -22,7 +22,7 @@ module id_stage (
 
     assign Instr = inputs.instr;
 
-    controller control_unit(
+    (* dont_touch = "true" *) controller control_unit(
 
         .opcode         ( Instr[6:0]              ),
         .funct3         ( Instr[14:12]            ),
@@ -58,7 +58,7 @@ module id_stage (
 
     );
 
-    extend immediate_extend(
+    (* dont_touch = "true" *) extend immediate_extend(
 
         .instr_31_7     ( Instr[31:7]         ),
         .immsrc         ( ImmSrc              ),

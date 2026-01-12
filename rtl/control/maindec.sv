@@ -1,3 +1,5 @@
+(* dont_touch = "true" *)
+
 `timescale 1ns/1ps
 
 module maindec (

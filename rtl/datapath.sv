@@ -69,9 +69,9 @@ module datapath (
     if_stage IF (
 
         .PC         ( PCF ),
+        .PCPlus4F   ( PCPlus4F ),
 
-        .outputs    ( ifid_d ),
-        .PCPlus4F   ( PCPlus4F )
+        .outputs    ( ifid_d )
 
     );
 
@@ -169,7 +169,7 @@ module datapath (
 
     );
 
-    wb_stage WB (
+    (* dont_touch = "true" *) wb_stage WB (
 
         .inputs         ( memwb_q ),
 

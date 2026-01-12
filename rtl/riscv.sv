@@ -1,3 +1,5 @@
+(* keep_hierarchy = "yes" *)
+
 import hazard_io::*;
 
 `timescale 1ns/1ps
@@ -55,7 +57,7 @@ module riscv (
 
     );
 
-    hazard hazard (
+    (* dont_touch = "true" *) hazard hazard (
 
         .StallF             ( hazard_outputs.StallF ),
         .StallD             ( hazard_outputs.StallD ),

@@ -28,7 +28,7 @@ module ex_stage (
 
     // Forwarding A
 
-    mux3 SrcAE_input1mux(
+    (* dont_touch = "true" *) mux3 SrcAE_input1mux(
 
         .d0 (inputs.RD1),
         .d1 (ResultW),
@@ -38,7 +38,7 @@ module ex_stage (
 
     );
 
-    mux2 SrcAEmux(
+    (* dont_touch = "true" *) mux2 SrcAEmux(
 
         .d0 (SrcAE_input1),
         .d1 (inputs.PC),
@@ -49,7 +49,7 @@ module ex_stage (
 
     // Forwarding B
 
-    mux3 WriteDataEmux(
+    (* dont_touch = "true" *) mux3 WriteDataEmux(
 
         .d0 (inputs.RD2),
         .d1 (ResultW),
@@ -59,7 +59,7 @@ module ex_stage (
 
     );
 
-    mux2 SrcBEmux(
+    (* dont_touch = "true" *) mux2 SrcBEmux(
 
         .d0 (outputs.WriteData),
         .d1 (inputs.ImmExt),
@@ -68,7 +68,7 @@ module ex_stage (
 
     );
 
-    branch_unit branch_unit(
+    (* dont_touch = "true" *) branch_unit branch_unit(
 
         .SrcAE          (SrcAE),
         .SrcBE          (outputs.WriteData),
@@ -80,7 +80,7 @@ module ex_stage (
     assign PCTargetE = ( inputs.jumpReg ? SrcAE : inputs.PC ) +
                         inputs.ImmExt;
 
-    alu ALU(
+    (* dont_touch = "true" *) alu ALU(
 
         .d0 (SrcAE),
         .d1 (SrcBE),
