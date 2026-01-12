@@ -1,15 +1,16 @@
 import pipeline_pkg::idex_t;
 import pipeline_pkg::exmem_t;
 
-module ex_stage (
+module ex_stage
+    #( parameter XLEN = 32 ) (
 
-        input logic [31:0]  ResultW,
-        input logic [31:0]  ALUResultM,
+        input logic [XLEN-1:0]  ResultW,
+        input logic [XLEN-1:0]  ALUResultM,
         input logic [1:0]   ForwardAE,
         input logic [1:0]   ForwardBE,
 
         output logic        PCSrcE,
-        output logic [31:0] PCTargetE,
+        output logic [XLEN-1:0] PCTargetE,
 
         input idex_t inputs,
         output exmem_t outputs,
@@ -21,14 +22,14 @@ module ex_stage (
 );
 
     logic        branchTakenE;
-    logic [31:0] SrcAE, SrcBE;
-    logic [31:0] SrcAE_input1;
+    logic [XLEN-1:0] SrcAE, SrcBE;
+    logic [XLEN-1:0] SrcAE_input1;
 
     assign PCSrcE = (inputs.Branch & branchTakenE) | inputs.Jump;
 
     // Forwarding A
 
-    (* dont_touch = "true" *) mux3 SrcAE_input1mux(
+    (* dont_touch = "true" *) mux3 #(.XLEN(XLEN)) SrcAE_input1mux(
 
         .d0 (inputs.RD1),
         .d1 (ResultW),
@@ -38,7 +39,7 @@ module ex_stage (
 
     );
 
-    (* dont_touch = "true" *) mux2 SrcAEmux(
+    (* dont_touch = "true" *) mux2 #(.XLEN(XLEN)) SrcAEmux(
 
         .d0 (SrcAE_input1),
         .d1 (inputs.PC),
@@ -49,7 +50,7 @@ module ex_stage (
 
     // Forwarding B
 
-    (* dont_touch = "true" *) mux3 WriteDataEmux(
+    (* dont_touch = "true" *) mux3 #(.XLEN(XLEN)) WriteDataEmux(
 
         .d0 (inputs.RD2),
         .d1 (ResultW),
@@ -59,7 +60,7 @@ module ex_stage (
 
     );
 
-    (* dont_touch = "true" *) mux2 SrcBEmux(
+    (* dont_touch = "true" *) mux2 #(.XLEN(XLEN)) SrcBEmux(
 
         .d0 (outputs.WriteData),
         .d1 (inputs.ImmExt),
@@ -68,7 +69,7 @@ module ex_stage (
 
     );
 
-    (* dont_touch = "true" *) branch_unit branch_unit(
+    (* dont_touch = "true" *) branch_unit #(.XLEN(XLEN)) branch_unit(
 
         .SrcAE          (SrcAE),
         .SrcBE          (outputs.WriteData),
@@ -80,7 +81,7 @@ module ex_stage (
     assign PCTargetE = ( inputs.jumpReg ? SrcAE : inputs.PC ) +
                         inputs.ImmExt;
 
-    (* dont_touch = "true" *) alu ALU(
+    (* dont_touch = "true" *) alu #(.XLEN(XLEN)) ALU(
 
         .d0 (SrcAE),
         .d1 (SrcBE),
