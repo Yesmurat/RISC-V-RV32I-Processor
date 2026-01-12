@@ -24,7 +24,7 @@ module mem_stage #(
     logic [XLEN/8-1:0] byteEnable;
     logic [XLEN-1:0] RD_data;
 
-    (* dont_touch = "true" *) wdext wdext(
+    (* dont_touch = "true" *) wdext #(.XLEN(XLEN)) wdext(
 
         .MemWriteM  ( inputs.MemWrite ),
         .byteAddrM  ( inputs.ALUResult[ $clog2(XLEN/8)-1 : 0 ] ),
