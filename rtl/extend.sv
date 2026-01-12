@@ -1,11 +1,12 @@
 `timescale 1ns/1ps
 
-module extend (
+module extend
+    #( parameter XLEN = 32 ) (
 
     input  logic [24:0] instr_31_7,
     input  logic [2:0]  immsrc,
 
-    output logic [31:0] immext
+    output logic [XLEN-1:0] immext
     
 );
 
