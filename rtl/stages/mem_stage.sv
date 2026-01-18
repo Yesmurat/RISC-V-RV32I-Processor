@@ -53,7 +53,7 @@ module mem_stage #(
 
     (* dont_touch = "true" *) loadext #(.XLEN(XLEN)) loadext(
 
-        .LoadTypeM  ( inputs.funct3 ),
+        .funct3     ( inputs.funct3 ),
         .RD_data    ( RD_data ),
         .byteAddrM  ( inputs.ALUResult[ $clog2(XLEN/8)-1 : 0 ] ),
 

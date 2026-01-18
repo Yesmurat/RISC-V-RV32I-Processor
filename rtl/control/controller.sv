@@ -28,6 +28,7 @@ module controller (
     (* dont_touch = "true" *) maindec md(
 
         .opcode     (opcode),
+        .funct3     (funct3)
         .ctrl       (ctrls)
 
     );

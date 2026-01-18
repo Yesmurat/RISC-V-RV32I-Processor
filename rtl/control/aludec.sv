@@ -37,12 +37,12 @@ module aludec (
 
                 unique case (funct3)
                     
-                    3'b000: ALUControl = RtypeSub ? SUB : ADD;
-                    3'b001: ALUControl = SLL;
+                    3'b000: ALUControl = RtypeSub ? SUB : ADD; // same for rv32 & rv64
+                    3'b001: ALUControl = SLL; // same for rv32 & rv64
                     3'b010: ALUControl = SLT; // slt/slti (signed)
                     3'b011: ALUControl = SLTU; // sltu/sltiu (unsigned)
                     3'b100: ALUControl = XOR;
-                    3'b101: ALUControl = funct7b5 ? SRA : SRL; // sra/srai or srl/srli
+                    3'b101: ALUControl = funct7b5 ? SRA : SRL; // sra/srai or srl/srli (same for rv32 & rv64)
                     3'b110: ALUControl = OR; // or/ori
                     3'b111: ALUControl = AND; // and/andi
 

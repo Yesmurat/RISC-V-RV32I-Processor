@@ -118,20 +118,28 @@ package control_pkg;
         logic [1:0] ALUOp;
         logic       SrcAsrcD;
         logic       jumpRegD;
+        logic       is_word_op;
         
     } control_signals;
 
     typedef enum logic {
 
-        load   = 7'b0000011,
-        store  = 7'b0100011,
+        // rv32
+        load   = 7'b0000011, // same for rv32 & rv64
+        store  = 7'b0100011, // same for rv32 & rv64
         r_type  = 7'b0110011,
         i_type  = 7'b0010011,
         branch = 7'b1100011,
         lui    = 7'b0110111,
         auipc  = 7'b0010111,
         jal    = 7'b1101111,
-        jalr   = 7'b1100111
+        jalr   = 7'b1100111,
+
+        // rv64
+        i_type64 = 7'b0011011,
+        sd       = 7'b0100011,
+        r_type64 = 7'b0111011
+
 
     } opcodes;
 
