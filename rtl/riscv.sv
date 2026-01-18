@@ -15,13 +15,13 @@ module riscv #(
         input logic         reset,
 
         output logic [4:0]  Rs1D,
-        output logic [4:0]  Rs2D,
+        output logic [4:0]  Rs2D
 
-        output logic [XLEN-1:0] dbg_PCF,
-        output logic [31:0] dbg_InstrD,
-        output logic [XLEN-1:0] dbg_ALUResultE,
-        output logic [XLEN-1:0] dbg_load_data,
-        output logic [XLEN-1:0] dbg_ResultW
+        // output logic [XLEN-1:0] dbg_PCF,
+        // output logic [31:0]     dbg_InstrD,
+        // output logic [XLEN-1:0] dbg_ALUResultE,
+        // output logic [XLEN-1:0] dbg_load_data,
+        // output logic [XLEN-1:0] dbg_ResultW
     
     );
 
@@ -30,8 +30,8 @@ module riscv #(
 
     datapath #(
         
-        .XLEN(XLEN),
-        .ADDR_WIDTH(ADDR_WIDTH)
+        .XLEN           (XLEN),
+        .ADDR_WIDTH     (ADDR_WIDTH)
 
     ) datapath (
 
@@ -56,14 +56,14 @@ module riscv #(
         .ResultSrcE_zero    ( hazard_inputs.ResultSrcE_zero ),
         .RegWriteM          ( hazard_inputs.RegWriteM ),
         .RegWriteW          ( hazard_inputs.RegWriteW ),
-        .PCSrcE             ( hazard_inputs.PCSrcE ),
+        .PCSrcE             ( hazard_inputs.PCSrcE )
 
         // Debug signals
-        .dbg_PCF            (dbg_PCF),
-        .dbg_InstrD         (dbg_InstrD),
-        .dbg_ALUResultE     (dbg_ALUResultE),
-        .dbg_load_data      (dbg_load_data),
-        .dbg_ResultW        (dbg_ResultW)
+        // .dbg_PCF            (dbg_PCF),
+        // .dbg_InstrD         (dbg_InstrD),
+        // .dbg_ALUResultE     (dbg_ALUResultE),
+        // .dbg_load_data      (dbg_load_data),
+        // .dbg_ResultW        (dbg_ResultW)
 
     );
 

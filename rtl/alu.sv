@@ -6,6 +6,7 @@ module alu
         input logic  [ XLEN-1 : 0 ]     d0,
         input logic  [ XLEN-1 : 0 ]     d1,
         input logic  [3:0]              s,
+        input logic                     is_word_op,
         
         output logic [ XLEN-1 : 0 ]     y
         
@@ -21,36 +22,50 @@ module alu
     localparam ALU_SLL  = 4'b0111;
     localparam ALU_SRL  = 4'b1000;
     localparam ALU_SRA  = 4'b1001;
-    localparam SHAMT_WIDTH = $clog2(XLEN);
+
+    localparam SHAMT_WIDTH_XLEN = $clog2(XLEN);
+    localparam SHAMT_WIDTH_WORD = 5; // RV32/RV64 word operations use 5-bit shifts
+
+    logic [XLEN-1:0] alu_raw;
 
     always_comb begin
 
-        case (s)
+        unique case (s)
 
-            ALU_ADD: y = d0 + d1; // add/addi
+            ALU_ADD: alu_raw = d0 + d1;
+            ALU_SUB: alu_raw = d0 - d1;
+            ALU_AND: alu_raw = d0 & d1;
+            ALU_OR: alu_raw = d0 | d1;
+            ALU_XOR: alu_raw = d0 ^ d1;
 
-            ALU_SUB: y = d0 - d1; // sub
+            ALU_SLT: alu_raw = ( $signed(d0) < $signed(d1) ) ? '1 : '0;
+            ALU_SLTU: alu_raw = (d0 < d1) ? '1 : '0;
 
-            ALU_SLL: y = d0 << d1[ SHAMT_WIDTH-1:0 ]; // sll/slli
+            ALU_SLL: alu_raw = d0 << (
+                        is_word_op
+                        ? d1[SHAMT_WIDTH_WORD-1:0]
+                        : d1[SHAMT_WIDTH_XLEN-1:0]
+                    );
 
-            ALU_SLT: y = ($signed(d0) < $signed(d1)) ? { '1 } : { '0 }; // slt/slti (signed)
-            
-            ALU_SLTU: y = (d0 < d1) ? { '1 } : { '0 }; // sltu/sltiu (unsigned)
+            ALU_SRL: alu_raw = d0 >> (
+                        is_word_op
+                        ? d1[SHAMT_WIDTH_WORD-1:0]
+                        : d1[SHAMT_WIDTH_XLEN-1:0]
+                    );
 
-            ALU_XOR: y = d0 ^ d1; // xor/xori 
+            ALU_SRA: alu_raw = $signed(d0) >> (
+                        is_word_op
+                        ? d1[SHAMT_WIDTH_WORD-1:0]
+                        : d1[SHAMT_WIDTH_XLEN-1:0]
+                    );
 
-            ALU_SRA: y = $signed(d0) >>> d1[ SHAMT_WIDTH-1:0 ]; // sra/srai
-
-            ALU_SRL: y = d0 >> d1[ SHAMT_WIDTH-1:0 ]; // srl/srli
-            
-            ALU_OR: y = d0 | d1; // or/ori
-
-            ALU_AND: y = d0 & d1; // and/andi
-
-            default: y = '0;
+            default: alu_raw = '0;
 
         endcase
-
+        
     end
+
+    // Word op: take lower 32 bits and sign-extend to XLEN
+    assign y = is_word_op ? { { (XLEN-32){alu_raw[31]} }, alu_raw[31:0] } : alu_raw;
 
 endmodule // ALU

@@ -83,10 +83,11 @@ module ex_stage
 
     (* dont_touch = "true" *) alu #(.XLEN(XLEN)) ALU(
 
-        .d0 (SrcAE),
-        .d1 (SrcBE),
-        .s  (inputs.ALUControl),
-        .y  (outputs.ALUResult)
+        .d0         (SrcAE),
+        .d1         (SrcBE),
+        .s          (inputs.ALUControl),
+        .is_word_op (inputs.is_word_op),
+        .y          (outputs.ALUResult)
 
     );
 

@@ -33,14 +33,14 @@ module datapath # (
                 output logic        ResultSrcE_zero,
                 output logic        RegWriteM,
                 output logic        RegWriteW,
-                output logic        PCSrcE,
+                output logic        PCSrcE
 
                 // Debug signals
-                output logic [XLEN-1:0] dbg_PCF,
-                output logic [31:0] dbg_InstrD,
-                output logic [XLEN-1:0] dbg_ALUResultE,
-                output logic [XLEN-1:0] dbg_load_data,
-                output logic [XLEN-1:0] dbg_ResultW
+                // output logic [XLEN-1:0] dbg_PCF,
+                // output logic [31:0] dbg_InstrD,
+                // output logic [XLEN-1:0] dbg_ALUResultE,
+                // output logic [XLEN-1:0] dbg_load_data,
+                // output logic [XLEN-1:0] dbg_ResultW
 
 );
 
@@ -60,7 +60,11 @@ module datapath # (
     // PC mux
     assign PCF_new = PCSrcE ? PCTargetE : PCPlus4F;
 
-    pc_reg #(.XLEN(XLEN)) PC_reg (
+    pc_reg #(
+        
+        .XLEN(XLEN)
+        
+    ) PC_reg (
 
         .clk        ( clk ),
         .en         ( ~StallF ),
@@ -194,10 +198,10 @@ module datapath # (
 
     );
 
-    assign dbg_PCF = PCF;
-    assign dbg_InstrD = ifid_q.instr;
-    assign dbg_ALUResultE = exmem_d.ALUResult;
-    assign dbg_load_data = memwb_d.load_data;
-    assign dbg_ResultW = ResultW;
+    // assign dbg_PCF = PCF;
+    // assign dbg_InstrD = ifid_q.instr;
+    // assign dbg_ALUResultE = exmem_d.ALUResult;
+    // assign dbg_load_data = memwb_d.load_data;
+    // assign dbg_ResultW = ResultW;
 
 endmodule

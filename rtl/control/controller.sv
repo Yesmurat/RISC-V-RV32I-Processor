@@ -1,5 +1,7 @@
 `timescale 1ns/1ps
 
+import control_pkg::control_signals;
+
 module controller (
     
     input logic  [6:0] opcode,
@@ -21,19 +23,12 @@ module controller (
 
     logic [1:0] ALUOp;
 
+    control_signals ctrls;
+
     (* dont_touch = "true" *) maindec md(
 
         .opcode     (opcode),
-        .ResultSrcD (ResultSrcD),
-        .MemWriteD  (MemWriteD),
-        .BranchD    (BranchD),
-        .ALUSrcD    (ALUSrcD),
-        .RegWriteD  (RegWriteD),
-        .JumpD      (JumpD),
-        .ImmSrcD    (ImmSrcD),
-        .ALUOp      (ALUOp),
-        .SrcAsrcD   (SrcAsrcD),
-        .jumpRegD   (jumpRegD)
+        .ctrl       (ctrls)
 
     );
 
@@ -46,5 +41,15 @@ module controller (
         .ALUControl (ALUControlD)
 
     );
+
+    assign RegWriteD = ctrls.RegWriteD;
+    assign ResultSrcD = ctrls.ResultSrcD;
+    assign MemWriteD = ctrls.MemWriteD;
+    assign JumpD = ctrls.JumpD;
+    assign BranchD = ctrls.BranchD;
+    assign ALUControlD = ctrls.ALUControlD;
+    assign ImmSrcD = ctrls.ImmSrcD;
+    assign SrcAsrcD = ctrls.SrcAsrcD;
+    assign jumpRegD = ctrls.jumpRegD;
     
 endmodule
