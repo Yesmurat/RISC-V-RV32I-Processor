@@ -32,17 +32,17 @@ module loadext #(
 
             3'b000: load_data = $signed(byte_value); // load byte
 
-            3'b100: load_data = $unsigned(byte_value); // load byte unsigned
-
             3'b001: load_data = $signed(hword_value); // load half
-
-            3'b101: load_data = $unsigned(hword_value); // load half unsigned
 
             3'b010: load_data = RD_data[31:0]; // load word
 
+            3'b100: load_data = $unsigned(byte_value); // load byte unsigned
+
+            3'b101: load_data = $unsigned(hword_value); // load half unsigned
+
             3'b011: load_data = RD_data; // load double word
 
-            3'b011: load_data = $unsigned(RD_data); // load word unsigned
+            3'b110: load_data = $unsigned(RD_data); // load word unsigned
 
             default: load_data = '0;
 
