@@ -16,7 +16,7 @@ The core has been **simulated and verified in Vivado** and **successfully deploy
 ---
 
 ## Features
-- Implements all **RV32I base integer instructions** (R, I, S, B, and J types)
+- Implements all **RV64I base integer instructions** (R, I, S, B, and J types)
 - Fully pipelined architecture with **forwarding and stall control**
 - Separate **instruction and data memory modules** built from LUTs
 - **Byte-enable logic** for store instructions
