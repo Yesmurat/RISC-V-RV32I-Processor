@@ -4,7 +4,7 @@
 
 The design follows the classic in-order pipeline and supports full execution of the RV64I base integer instruction set. Beyond functional correctness, the project focuses on clean RTL architecture using modern SystemVerilog features to reduce wiring complexity and improve maintainability.
 
-The core has been **simulated and verified in Vivado** and **successfully deployed on the Arty S7-25.
+The core has been **simulated and verified in Vivado** and successfully deployed on the Arty S7-25.
 
 **Pipeline stages:**
 - Instruction Fetch (IF)
