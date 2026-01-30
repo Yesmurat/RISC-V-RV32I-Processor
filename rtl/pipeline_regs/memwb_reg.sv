@@ -12,7 +12,7 @@ module memwb_reg (
     output memwb_t outputs
 );
 
-    always_ff @( posedge clk ) begin : memwb_register
+    always_ff @( posedge clk or posedge reset ) begin : memwb_register
         
         if (reset) begin
             outputs <= '0;

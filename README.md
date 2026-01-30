@@ -1,10 +1,12 @@
 # DragonCore
 
-## DragonCore is a **5-stage pipelined RV32I RISC-V processor** in SystemVerilog.
+DragonCore is a 5-stage parameterizable RISC-V soft-core designed in SystemVerilog.
 
-The design follows the classic in-order pipeline and supports full execution of the RV32I base integer instruction set. Beyond functional correctness, the project focuses on clean RTL architecture using modern SystemVerilog features to reduce wiring complexity and improve maintainability.
+The design follows the classic in-order pipeline and should support full execution of both RV32 & RV64 instruction sets.
 
-The core has been **simulated and verified in Vivado** and **successfully deployed on the Arty S7-25.
+**Note**: The project is currently in the process simulation and verification in Vivado.
+
+In the end, the design should be successfully deployed on the Arty S7-25 FPGA board.
 
 **Pipeline stages:**
 - Instruction Fetch (IF)
@@ -16,33 +18,29 @@ The core has been **simulated and verified in Vivado** and **successfully deploy
 ---
 
 ## Features
-- Implements all **RV32I base integer instructions** (R, I, S, B, and J types)
-- Fully pipelined architecture with **forwarding and stall control**
-- Separate **instruction and data memory modules** built from LUTs
-- **Byte-enable logic** for store instructions
-- Supports **clear/reset** signal and hazard resolution
+- Implements all RV32 & RV64 instructions
+- All key modules are parameterized
+- Fully pipelined architecture with forwarding and stall control
+- Separate instruction and data memory modules built using BRAM
 
 ---
 
 ## Verification
-- **directed test cases** covering all instruction types
-- Testbench includes **clock, reset, and realistic instruction sequences**
-- Waveform analysis performed in **Vivado Simulator**
-- Example assembly programs located in `tests/`
-- Waveform captures available in `tb/waveforms/`
+- assembly tests are located in `./tests` folder
+- assembly test cases cover all instruction types
+- Waveform analysis in **Vivado Simulator**
 
 ---
 
 ## FPGA Implementation
 - **Target Board:** Arty S7-25 (Xilinx Spartan-7)
 - **Implementation Tool:** Xilinx Vivado
-- **Post-implementation Fmax:** ~100 MHz
-- **Instruction & Data Memories:** Implemented using LUT-based distributed memory
-- **Constraints File:** `xdc/arty_s7_25.xdc`
+- **Target Fmax:** ~100 MHz
+- **Instruction & Data Memories:** Implemented using BRAM
+- **Constraints File:** `./xdc/arty_s7_25.xdc`
 
 ---
 
 ## Future Work
-- RV64I support
+- Being able to compile and run C programs on the core
 - Instruction and data caches
-- AXI-based memory interface

@@ -13,7 +13,7 @@ module exmem_reg (
     
 );
 
-    always_ff @( posedge clk ) begin : exmem_register
+    always_ff @( posedge clk or posedge reset ) begin : exmem_register
         
         if (reset) begin
             outputs <= '0;
