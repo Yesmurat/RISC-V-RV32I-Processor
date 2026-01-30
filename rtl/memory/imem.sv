@@ -19,7 +19,7 @@ module imem #(
     
     logic [31:0] Imem[ 2**ADDR_WIDTH-1 : 0 ];
     
-    initial $readmemh("./memory/imem.mem", Imem);
+    initial $readmemh("./imem.mem", Imem);
 
     // always_ff @(posedge clk) begin
 

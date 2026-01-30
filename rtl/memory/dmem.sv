@@ -20,7 +20,7 @@ module dmem #(
 
     logic [XLEN-1:0] Dmem[ 2**ADDR_WIDTH-1 : 0 ];
     
-    initial $readmemh("./memory/dmem.mem", Dmem);
+    initial $readmemh("./dmem.mem", Dmem);
 
     always_ff @(posedge clk) begin
 
