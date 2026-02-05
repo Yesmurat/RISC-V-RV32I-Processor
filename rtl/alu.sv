@@ -44,7 +44,7 @@ module alu
                         : d1[SHAMT_WIDTH_XLEN-1:0]
                     );
 
-            SRA: alu_raw = $signed(d0) >> (
+            SRA: alu_raw = $signed(d0) >>> (
                         is_word_op
                         ? d1[SHAMT_WIDTH_WORD-1:0]
                         : d1[SHAMT_WIDTH_XLEN-1:0]
