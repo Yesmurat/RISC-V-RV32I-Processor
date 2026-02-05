@@ -15,7 +15,6 @@ module controller (
     output logic       BranchD,
     output logic [3:0] ALUControlD,
     output logic       ALUSrcD,
-    output logic [2:0] ImmSrcD,
     output logic       SrcAsrcD,
     output logic       jumpRegD,
     output logic       is_word_op
@@ -51,7 +50,6 @@ module controller (
     assign MemWriteD = ctrls.MemWriteD;
     assign JumpD = ctrls.JumpD;
     assign BranchD = ctrls.BranchD;
-    assign ImmSrcD = ctrls.ImmSrcD;
     assign SrcAsrcD = ctrls.SrcAsrcD;
     assign jumpRegD = ctrls.jumpRegD;
     assign ALUSrcD = ctrls.ALUSrcD;
