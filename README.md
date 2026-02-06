@@ -65,7 +65,7 @@ dragon-riscv/
 - Tools: Xilinx Vivado
 - Target Clock: ~100 MHz
 - Memory: BRAM-based instruction and data memories
-- Constraints: `./xdc/arty_s7_25.xdc`
+- Constraints: `./xdc/constraints.xdc`
 
 <!-- **Status**: Design ready for synthesis (pending verification completion) -->
 
