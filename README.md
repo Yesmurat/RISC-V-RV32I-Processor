@@ -3,7 +3,7 @@
 Dragon is an educational, open-source 32-bit RISC-V processor core written in SystemVerilog.
 The core features a parameterizable design suitable for embedded control applications and implements the RV32I base integer instruction set.
 
-**Project Status**: Currently under simulation and verification in Vivado. Future work includes adding the M (Integer Multiplication) extension and FPGA deployment.
+**Project Status**: Currently under simulation and verification in Vivado. Future work includes FPGA deployment & adding ability to run C programs via UART.
 
 ---
 
