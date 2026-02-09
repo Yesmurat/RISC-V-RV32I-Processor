@@ -1,7 +1,6 @@
 `timescale 1ns/1ps
 
 import pipeline_pkg::*;
-import hazard_io::*;
 
 module datapath # (
 
@@ -121,7 +120,7 @@ module datapath # (
     idex_reg IDEX_reg (
 
         .clk        ( clk ),
-        .en         ( 1'b1 ),
+        // .en         ( 1'b1 ),
         .reset      ( reset | FlushE ),
 
         .inputs     ( idex_d ),
