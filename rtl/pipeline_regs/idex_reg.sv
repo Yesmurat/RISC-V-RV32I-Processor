@@ -5,7 +5,7 @@ import pipeline_pkg::idex_t;
 module idex_reg (
     
     input logic clk,
-    input logic en,
+    // input logic en,
     input logic reset,
 
     input idex_t inputs,
@@ -19,7 +19,7 @@ module idex_reg (
             outputs <= '0;
         end
 
-        else if (en) begin
+        else begin
             outputs <= inputs;
         end
         
