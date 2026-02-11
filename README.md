@@ -1,29 +1,23 @@
 # Dragon RISC-V Core
 
 Dragon is an educational, open-source 32-bit RISC-V processor core written in SystemVerilog.
-The core features a parameterizable design suitable for embedded control applications and implements the RV32I base integer instruction set.
+The core features a parameterizable design implements the RV32I base integer instruction set.
 
 **Project Status**: Currently under simulation and verification in Vivado. Future work includes FPGA deployment & adding ability to run C programs via UART.
 
 ---
 
-## Processor Microarchitecture
-![Core Microarchitecture](./Block%20Diagram.svg)
-<!-- <img src="./Block Diagram.svg" alt="Diagram description" width="500"> -->
+## Core Architecture
+![Architecture](./architecture.svg)
 
 ## Architecture
+Core follows the design of 5-stage pipelined processor (Figure 7.61) from "Digital Design & Computer Architecture: RISC-V Edition" with additional custom logic, control, and blocks (load extend, write extend, branch unit, etc.) to cover the whole 32-bit integer instruction set.
 
-**Pipeline Design**: Classic 5-stage in-order pipeline
-- **IF** - Instruction Fetch
-- **ID** - Instruction Decode
-- **EX** - Execute
-- **MEM** - Memory Access
-- **WB** - Write Back
+Design follows classis 5-stage in-order pipeline: IF -> ID -> EX -> MEM -> WB
+Hazards are hanlded by separate Hazard Unit which receives source & destination registers from ID, EX, MEM, and WB stages. Hazard Unit solves data hazards with forwarding using `ForwardAE` and `ForwardBE` signals to control mux selection in EX stage.
+Flushing is used for branch & jump instructions, and stalling is used to prevent load-use hazards.
 
-**Hazard Handling**:
-- Data forwarding between pipeline stages
-- Stall logic for load-use hazards
-- Branch/jump flush control
+Refer to microarchitecture for more detailed view of the core (![microarchitecture](microarchitecture.svg))
 
 ---
 
@@ -38,12 +32,12 @@ The core features a parameterizable design suitable for embedded control applica
 
 ## Project Structure
 ```
-dragon-riscv/
+Dragon/
 ├── rtl/              # SystemVerilog source files
-├── tests/            # Assembly test programs
+├── tests/            # Assembly test programs with linker script
 ├── sim/              # Simulation scripts
 |── tb/               # Testbench
-├── xdc/              # FPGA constraint files
+├── xdc/              # constraint file
 └── docs/             # Documentation
 ```
 
@@ -52,9 +46,10 @@ dragon-riscv/
 ## Verification
 
 **Test Suite**: Located in `./tests/`
-- Covers all RV32I instruction types (R, I, S, B, U, J)
-- Individual instruction test cases
-- Pipeline hazard scenarios
+- Two assembly programs to test rv32 and rv64 instructions
+- Tests cover all instruction types (R, I, S, B, U, J)
+- Pipeline hazard scenarios are included in the tests
+- Individual instruction test cases are on way...
 
 **Simulation**: Vivado Simulator
 - Waveform-based verification
@@ -120,7 +115,7 @@ For detailed design documentation, see:
 
 ## License
 
-Unless otherwise noted, everything in this repository is covered by the MIT License (see [License](./LICENSE) for full text).
+Everything in this repository is covered by the MIT License (see [License](./LICENSE) for full text).
 
 ---
 
