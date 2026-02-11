@@ -17,7 +17,7 @@ Design follows classis 5-stage in-order pipeline: IF -> ID -> EX -> MEM -> WB
 Hazards are hanlded by separate Hazard Unit which receives source & destination registers from ID, EX, MEM, and WB stages. Hazard Unit solves data hazards with forwarding using `ForwardAE` and `ForwardBE` signals to control mux selection in EX stage.
 Flushing is used for branch & jump instructions, and stalling is used to prevent load-use hazards.
 
-Refer to microarchitecture for more detailed view of the core ([microarchitecture](Microarchitecture.svg))
+Refer to microarchitecture for more detailed view of the core ([microarchitecture](./microarchitecture.svg)
 
 ---
 
