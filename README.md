@@ -7,6 +7,10 @@ The core features a parameterizable design suitable for embedded control applica
 
 ---
 
+## Processor Microarchitecture
+![Core Microarchitecture](./Block%20Diagram.svg)
+<!-- <img src="./Block Diagram.svg" alt="Diagram description" width="500"> -->
+
 ## Architecture
 
 **Pipeline Design**: Classic 5-stage in-order pipeline
