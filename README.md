@@ -1,7 +1,7 @@
 # Dragon RISC-V Core
 
 Dragon is an educational, open-source 32-bit RISC-V processor core written in SystemVerilog.
-The core features a parameterizable design implements the RV32I base integer instruction set.
+The core features a parameterizable design and implements the RV32I base integer instruction set.
 
 **Project Status**: Currently under simulation and verification in Vivado. Future work includes FPGA deployment & adding ability to run C programs via UART.
 
@@ -13,20 +13,20 @@ The core features a parameterizable design implements the RV32I base integer ins
 ## Architecture
 Core follows the design of 5-stage pipelined processor (Figure 7.61) from "Digital Design & Computer Architecture: RISC-V Edition" with additional custom logic, control, and blocks (load extend, write extend, branch unit, etc.) to cover the whole 32-bit integer instruction set.
 
-Design follows classis 5-stage in-order pipeline: IF -> ID -> EX -> MEM -> WB
-Hazards are hanlded by separate Hazard Unit which receives source & destination registers from ID, EX, MEM, and WB stages. Hazard Unit solves data hazards with forwarding using `ForwardAE` and `ForwardBE` signals to control mux selection in EX stage.
+The design follows classis 5-stage in-order pipeline: IF -> ID -> EX -> MEM -> WB.
+Hazards are handled by Hazard Unit, which receives source & destination registers from ID, EX, MEM, and WB stages. Hazard Unit solves data hazards with forwarding using `ForwardAE` and `ForwardBE` signals to control mux selection in EX stage.
 Flushing is used for branch & jump instructions, and stalling is used to prevent load-use hazards.
 
-Refer to microarchitecture for more detailed view of the core ([microarchitecture](./microarchitecture.svg)
+Refer to microarchitecture for more detailed view of the core ([microarchitecture](./microarchitecture.svg))
 
 ---
 
 ## Features
 
-- **ISA Support**: RV32I base integer instruction set
-- **Parameterizable Design**: Configurable data width and key module parameters
-- **Pipeline Optimizations**: Full forwarding paths and hazard detection unit
-- **Memory Architecture**: Separate instruction and data memories using BRAM
+- RV32 Integer Instruction Set support
+- Parameterizible data width and key module parameters
+- Hazard Unit with forwarding, stalling, and flushing logic
+- Separate instruction and data memories using BRAM
 
 ---
 
@@ -43,24 +43,16 @@ Dragon/
 
 ---
 
-## Verification
+## Simulation & Verification
 
-**Test Suite**: Located in `./tests/`
-- Two assembly programs to test rv32 and rv64 instructions
-- Tests cover all instruction types (R, I, S, B, U, J)
-- Pipeline hazard scenarios are included in the tests
-- Individual instruction test cases are on way...
-
-**Simulation**: Vivado Simulator
-- Waveform-based verification
-- Functional correctness validation
+The tests consist of two assembly programs (`rv32.s` and `rv64.s`) for RV32 and RV64 instruction sets, which are located in [tests](./tests/). Alongside assembly tests there is also a linker script that is used to turn assembly code into binary. Both tests cover all instruction types (R, I, S, B, U, J) and hazard scenarios. Individual instruction test cases are on the way. Simulation is performed in Vivado Simulator. Functional correctness of the design is validated with waveform-based verification.
 
 ---
 
 ## FPGA Implementation
 
 **Target Platform**:
-- Board: Arty S7-25 (Xilinx Spartan-7)
+- Board: Arty S7-25
 - Tools: Xilinx Vivado
 - Target Clock: ~100 MHz
 - Memory: BRAM-based instruction and data memories
